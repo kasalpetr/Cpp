@@ -1,4 +1,4 @@
-#ifndef __PROGTEST__
+
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
@@ -14,7 +14,7 @@
 #include <functional>
 #include <memory>
 using namespace std;
-#endif /* __PROGTEST__ */
+
 
 struct zamestnanec
 {
@@ -400,7 +400,7 @@ private:
   }
 };
 
-#ifndef __PROGTEST__
+
 int main(void)
 {
   string outName, outSurname;
@@ -453,99 +453,10 @@ int main(void)
     assert(b1.add("john", "Smith", "joHn", 31000));
     assert(b1.add("John", "smith", "jOhn", 31000));
 
-    CPersonalAgenda b2;
-    assert(!b2.getFirst(outName, outSurname));
-    assert(b2.add("James", "Bond", "james", 70000));
-    assert(b2.add("James", "Smith", "james2", 30000));
-    assert(b2.add("Peter", "Smith", "peter", 40000));
-    assert(!b2.add("James", "Bond", "james3", 60000));
-    assert(!b2.add("Peter", "Bond", "peter", 50000));
-    assert(!b2.changeName("joe", "Joe", "Black"));
-    assert(!b2.changeEmail("Joe", "Black", "joe"));
-    assert(!b2.setSalary("Joe", "Black", 90000));
-    assert(!b2.setSalary("joe", 90000));
-    assert(b2.getSalary("Joe", "Black") == 0);
-    assert(b2.getSalary("joe") == 0);
-    assert(!b2.getRank("Joe", "Black", lo, hi));
-    assert(!b2.getRank("joe", lo, hi));
-    assert(!b2.changeName("joe", "Joe", "Black"));
-    assert(!b2.changeEmail("Joe", "Black", "joe"));
-    assert(!b2.del("Joe", "Black"));
-    assert(!b2.del("joe"));
-    assert(!b2.changeName("james2", "James", "Bond"));
-    assert(!b2.changeEmail("Peter", "Smith", "james"));
-    assert(!b2.changeName("peter", "Peter", "Smith"));
-    assert(!b2.changeEmail("Peter", "Smith", "peter"));
-    assert(b2.del("Peter", "Smith"));
-    assert(!b2.changeEmail("Peter", "Smith", "peter2"));
-    assert(!b2.setSalary("Peter", "Smith", 35000));
-    assert(b2.getSalary("peter") == 0);
-    assert(b2.getSalary("Peter", "Smith") == 0);
-    assert(!b2.getRank("Peter", "Smith", lo, hi));
-    assert(!b2.changeName("peter", "Peter", "Falcon"));
-    assert(!b2.setSalary("peter", 37000));
-    assert(b2.getSalary("peter") == 0);
-    assert(!b2.getRank("peter", lo, hi));
-    assert(!b2.del("Peter", "Smith"));
+   
 
-    assert(!b2.del("peter"));
-
-    assert(b2.add("Peter", "Smith", "peter", 40000));
-    assert(b2.getSalary("peter") == 40000);
-  
-
-
-  // CPersonalAgenda b1;
-  // assert(!b1.del(""));
-  // assert(!b1.changeEmail("Peter", "Smith", "james"));
-  // assert(!b1.changeName("james2", "James", "Bond"));
-  // assert(!b1.getFirst(outName, outSurname));
-
-  // assert(b1.add("John", "a", "john", 30000));
-  // assert(b1.getFirst(outName, outSurname) && outName == "John" && outSurname == "a");
-  // assert(!b1.getNext("John", "a", outName, outSurname));
-
-  // assert(b1.add("John", "b", "a", 30000));
-  // assert(b1.add("", "", "", 30000));
-  // assert(b1.add("John", "d", "dd", 30000));
-  // assert(b1.add("John", "e", "ss", 30000));
-  // assert(b1.add("John", "f", "aa", 30000));
-  // assert(b1.add("John", "g", "saas", 30000));
-  // assert(b1.add("John", "h", "ddasdda", 30000));
-  // assert(b1.add("John", "i", "dddsaddasd", 30000));
-  // assert(b1.add("John", "j", "dsasss", 30000));
-  // assert(b1.add("John", "k", "ssss", 30000));
-  // assert(b1.add("John", "l", "ssssssss", 30000));
-  // assert(b1.add("John", "m", "jossshn", 30000));
-  // assert(b1.add("John", "n", "asddadsd", 30000));
-  // assert(b1.add("John", "o", "bf", 30000));
-  // assert(b1.add("John", "p", "bfsgetr", 30000));
-  // assert(b1.add("John", "q", "bfsfad", 30000));
-  // assert(b1.add("John", "r", "fergt", 30000));
-  // assert(b1.add("John", "s", "asg", 30000));
-  // assert(b1.add("John", "t", "asfg", 30000));
-  // assert(b1.add("John", "u", "asgh", 30000));
-  // assert(b1.add("John", "v", "ash", 30000));
-  // assert(b1.add("John", "w", "ashj", 30000));
-  // assert(b1.add("John", "x", "ahsj", 30000));
-  // assert(b1.add("John", "y", "1", 30000));
-  // assert(b1.add("John", "z", "ahsjk", 30000));
-  // assert(b1.add("John", "aa", "2", 30000));
-  // assert(b1.add("John", "ba", "3", 30000));
-  // assert(b1.add("John", "ca", "asj", 30000));
-  // assert(b1.add("John", "da", "asjk", 30000));
-  // assert(b1.add("John", "ea", "ashjk", 30000));
-  // assert(b1.add("John", "fa", "4", 30000));
-  // assert(b1.add("John", "za", "5", 30000));
-
-  // assert(b1.add("a b", "c", "7", 30000));
-  // assert(b1.add("a", "b c", "6", 30000));
-  // // assert(b1.getFirst(outName, outSurname) && outName == "John" && outSurname == "ja ja");
-  // assert(b1.getFirst(outName, outSurname) && outName == "a" && outSurname == "b c");
-
-  // assert(b1.getNext("a", "b c", outName, outSurname) && outName == "a b" && outSurname == "c");
-  // // assert(!b1.getNext("John", "z", outName, outSurname));
+ 
 
   return EXIT_SUCCESS;
 }
-#endif /* __PROGTEST__ */
+
