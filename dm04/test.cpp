@@ -13,7 +13,6 @@ using namespace std;
 
 using namespace std;
 
-
 class CMail
 {
 public:
@@ -47,12 +46,14 @@ public:
     delete[] m_to;
     delete[] m_body;
   }
+
   bool operator==(const CMail &x) const
   {
     return strcmp(m_from, x.m_from) == 0 &&
            strcmp(m_to, x.m_to) == 0 &&
            strcmp(m_body, x.m_body) == 0;
   }
+
   friend ostream &operator<<(ostream &os, const CMail &m)
   {
     os << "From: " << m.m_from << std::endl;
@@ -61,17 +62,40 @@ public:
     return os;
   }
 
+  bool operator<(const CMail &other) const
+  {
+    return m_to < other.m_to;
+  }
+
+  char *get_from() const
+  {
+    return m_from;
+  }
+  char *get_to() const
+  {
+    return m_to;
+  }
+
 private:
   char *m_from;
   char *m_to;
   char *m_body;
 };
 
-template<typename T>
+template <typename T>
 class Vector
 {
 public:
   Vector() : m_size(0), m_capacity(4), m_data(new T *[m_capacity]) {}
+
+  Vector(const Vector &other) : m_size(other.m_size), m_capacity(other.m_capacity), m_data(new T *[m_capacity])
+  {
+    for (int i = 0; i < m_size; ++i)
+    {
+      m_data[i] = new T(*other.m_data[i]);
+    }
+  }
+
   ~Vector()
   {
     for (int i = 0; i < m_size; ++i)
@@ -88,7 +112,32 @@ public:
       reserve(m_capacity * 2);
     }
     m_data[m_size++] = new T(mail);
-  } 
+  }
+
+  void clear()
+  {
+    for (int i = 0; i < m_size; ++i)
+    {
+      delete m_data[i];
+    }
+    m_size = 0;
+  }
+
+  void insert(int pos, const T &val)
+  {
+    if (m_size == m_capacity)
+      reserve(m_capacity * 2);
+
+    for (int i = m_size; i > pos; --i)
+      m_data[i] = m_data[i - 1];
+
+    m_data[pos] = new T(val);
+    ++m_size;
+  }
+
+  int m_size;
+  int m_capacity;
+  T **m_data;
 
 private:
   void reserve(int newCapacity)
@@ -102,17 +151,14 @@ private:
     m_data = newData;
     m_capacity = newCapacity;
   }
-
-  int m_size;
-  int m_capacity;
-  T **m_data;
 };
 
-/*
+
 class CMailIterator
 {
 public:
   explicit operator bool(void) const{
+        return m_mail != nullptr;
 
   }
   bool operator!(void) const{
@@ -126,9 +172,8 @@ public:
   }
 
 private:
-  // todo
+const char* m_mail;
 };
-*/
 
 
 class CMailServer
@@ -153,25 +198,96 @@ public:
 
   void sendMail(const CMail &m)
   {
-    box.push_back(m);
-    mailbox.push_back(box);
-    cout << m << endl;
+    if (inboxvektor.m_size == 0 && outboxvektor.m_size == 0) // když je to první prvek
+    {
+      box.clear();
+      box.push_back(m);
+      inboxvektor.push_back(box);
+      outboxvektor.push_back(box);
+    }
+    else
+    {
+      for (int i = 0; i < outboxvektor.m_size; i++) // plní outboxvektor pokud už tam je nekdo kdo má stejný from prida to nakonec jeho vektoru jinak to udela nový vektor nakonec
+      {
+        change = false;
+        if (strcmp(outboxvektor.m_data[i]->m_data[0]->get_from(), m.get_from()) == 0)
+        {
+          outboxvektor.m_data[i]->push_back(m);
+          change = true;
+          break;
+        }
+      }
+      if (!change)
+      {
+        box.clear();
+        box.push_back(m);
+        outboxvektor.push_back(box);
+      }
+
+      for (int i = 0; i < inboxvektor.m_size; i++)  // plní inboxvektor pokud už tam je nekdo kdo má stejný from prida to nakonec jeho vektoru jinak to udela nový vektor nakonec
+      {
+        change = false;
+        if (strcmp(inboxvektor.m_data[i]->m_data[0]->get_to(), m.get_to()) == 0)
+        {
+          inboxvektor.m_data[i]->push_back(m);
+          change = true;
+          break;
+        }
+      }
+      if (!change)
+      {
+        box.clear();
+        box.push_back(m);
+        inboxvektor.push_back(box);
+      }
+    }
   }
 
-  // void vypis(){
-  //   mailbox.vypis();
-  // }
-  // CMailIterator outbox(const char *email) const
-  // {
-  // }
+  void vypis()
+  {
+    cout << "inboxvektor --------------" << endl;
+    for (int i = 0; i < inboxvektor.m_size; i++)
+    {
+      cout << "-->" << inboxvektor.m_data[i]->m_data[0]->get_to() << "<--" << endl;
 
-  // CMailIterator inbox(const char *email) const
-  // {
-  // }
+      for (int j = 0; j < inboxvektor.m_data[i]->m_size; j++)
+      {
+        cout << *inboxvektor.m_data[i]->m_data[j] << endl;
+      }
+    }
+
+    cout << "outboxvektor --------------" << endl;
+    for (int i = 0; i < outboxvektor.m_size; i++)
+    {
+      cout << "-->" << outboxvektor.m_data[i]->m_data[0]->get_from() << "<--" << endl;
+      for (int j = 0; j < outboxvektor.m_data[i]->m_size; j++)
+      {
+        cout << *outboxvektor.m_data[i]->m_data[j] << endl;
+      }
+    }
+  }
+
+  CMailIterator outbox(const char *email) const
+  {
+  }
+
+  CMailIterator inbox(const char *email) const
+  {
+    for (int i = 0; i < inboxvektor.m_size; i++)
+    {
+     if (strcmp(outboxvektor.m_data[i]->m_data[0]->get_from(), email) == 0)
+     {
+     }
+     
+    }
+    
+  }
 
 private:
   Vector<CMail> box;
-  Vector<Vector<CMail>> mailbox;
+  Vector<Vector<CMail>> inboxvektor;
+  Vector<Vector<CMail>> outboxvektor;
+  bool change = false;
 };
 
 #ifndef __PROGTEST__
@@ -181,8 +297,6 @@ bool matchOutput(const CMail &m, const char *str)
   oss << m;
   return oss.str() == str;
 }
-
-
 
 int main(void)
 {
@@ -196,18 +310,20 @@ int main(void)
   assert(!(CMail("john", "peter", "progtest deadline") == CMail("progtest deadline", "peter", "john")));
   CMailServer s0;
   s0.sendMail(CMail("john", "peter", "some important mail"));
-  // strncpy(from, "john", sizeof(from));
-  // strncpy(to, "thomas", sizeof(to));
-  // strncpy(body, "another important mail", sizeof(body));
-  // s0.sendMail(CMail(from, to, body));
-  // strncpy(from, "john", sizeof(from));
-  // strncpy(to, "alice", sizeof(to));
-  // strncpy(body, "deadline notice", sizeof(body));
-  // s0.sendMail(CMail(from, to, body));
-  // s0.sendMail(CMail("alice", "john", "deadline confirmation"));
-  // s0.sendMail(CMail("peter", "alice", "PR bullshit"));
-  // s0.vypis();
-  // CMailIterator i0 = s0.inbox("alice");
+
+  strncpy(from, "john", sizeof(from));
+  strncpy(to, "thomas", sizeof(to));
+  strncpy(body, "another important mail", sizeof(body));
+  s0.sendMail(CMail(from, to, body));
+  strncpy(from, "john", sizeof(from));
+  strncpy(to, "alice", sizeof(to));
+  strncpy(body, "deadline notice", sizeof(body));
+  s0.sendMail(CMail(from, to, body));
+  s0.sendMail(CMail("alice", "john", "deadline confirmation"));
+  s0.sendMail(CMail("peter", "alice", "PR bullshit"));
+
+  s0.vypis();
+  CMailIterator i0 = s0.inbox("alice");
   // assert(i0 && *i0 == CMail("john", "alice", "deadline notice"));
   // assert(matchOutput(*i0, "From: john, To: alice, Body: deadline notice"));
   // assert(++i0 && *i0 == CMail("peter", "alice", "PR bullshit"));
