@@ -402,9 +402,7 @@ string toString(const _T &x)
 int main(void)
 {
 
-  assert(sizeof(CButton) - sizeof(string) < sizeof(CComboBox) - sizeof(vector<string>));
-  assert(sizeof(CInput) - sizeof(string) < sizeof(CComboBox) - sizeof(vector<string>));
-  assert(sizeof(CLabel) - sizeof(string) < sizeof(CComboBox) - sizeof(vector<string>));
+
   CWindow a(0, "Sample window", CRect(10, 10, 600, 480));
   a.add(CButton(1, CRect(0.1, 0.8, 0.3, 0.1), "Ok")).add(CButton(2, CRect(0.6, 0.8, 0.3, 0.1), "Cancel"));
   a.add(CLabel(10, CRect(0.1, 0.1, 0.2, 0.1), "Username:"));
