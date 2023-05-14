@@ -7,3 +7,5 @@ Hrač bude mít na začátku 1 mraveniště, protihráč(počítač) bude mít t
 Za každé mraveniště bude hráč po určitém počtu kol dostavat bonusove body. Za tyto body si bude moct koupit vylepšení pro svoje mraveniste. Napr. mravenci z tohoto mraveniste budou silnejsi, rychlejsi, zvetsi se maximalni hodnota mravencu v mravenisti atd..
 
 Zároveň v každém mraveniště budeme moct pri obsazeni mravenci vybrat jaky druh mravencu se zde bude stavět.
+
+(Na mém gitlabu je aktulní postup mé semestrální práce)
