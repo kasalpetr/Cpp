@@ -10,8 +10,8 @@ private:
 
 public:
     void start();
-    void saveGame(const std::string& saveFile);
-    void loadGame(const std::string& saveFile);
+    void saveGame(const string& saveFile);
+    void loadGame(const string& saveFile);
 };
 
 #endif  // GAME_H

@@ -5,7 +5,7 @@
 
 class Obstacles {
 private:
-    // Vlastnosti mraveniště
+    // Vlastnosti překážek
     int id;
 public:
     Obstacles(int id);

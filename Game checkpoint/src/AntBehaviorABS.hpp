@@ -6,6 +6,7 @@ private:
     // Vlastnosti bonusového efektu
 
 public:
+    AntBehaviorABS();
     virtual void ApplyType() = 0;
 };
 

@@ -6,7 +6,7 @@
 #include "AntHill.hpp"
 #include "Ant.hpp"
 #include "Position.hpp"
-#include "obstacles.hpp"
+#include "Obstacles.hpp"
 
 
 using namespace std;
@@ -15,12 +15,12 @@ using namespace std;
 class Board {
 private:
     // Interní datové struktury pro reprezentaci desky
-    vector<Ant> ants;
-    vector<AntHill> ants;
-    vector<Obstacles> ants;
+    vector<Ant> Ants;
+    vector<AntHill> AntsHill;
+    vector<Obstacles> Obstacles;
 
 public:
-    Board();
+    Board(vector<AntHill> AntsHill, vector<Obstacles> Obstacles);
     void loadMap(const string& mapFile);
     void placeAntHill(AntHill* antHill, const Position& position);
     void placeObstacles(Obstacles* obstacles, const Position& position);
