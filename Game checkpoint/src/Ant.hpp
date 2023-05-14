@@ -9,15 +9,15 @@ class Ant
 private:
     // Vlastnosti mravence
     int id;
-    int level;
-    int strenght;
-    int defend;
+    int level; // level mravence
+    int strenght; // sila mravence
+    int defend; // obrana sila mravence
 public:
     Ant(int id, int level, int strenght, int defend);
-    void moveTo(const AntHill &target);
-    void attack(const AntHill &target);
-    void defend();
-    void specialAbility(AntBehaviorABS &ability);
+    void moveTo(const AntHill &target); //pohyb mravence
+    void attack(const AntHill &target); // utok mravence
+    void defend(); // obrana
+    void specialAbility(AntBehaviorABS &ability); // specialni schopnosti(utocnik, obrance, rychlejsi mravenec)
 };
 
 #endif // ANT_H

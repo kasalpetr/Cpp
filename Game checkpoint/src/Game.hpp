@@ -4,14 +4,16 @@
 #include <string>
 #include "Board.hpp"
 
-class Game {
+class Game
+{
 private:
     // Interní proměnné pro reprezentaci stavu hry
 
 public:
-    void start();
-    void saveGame(const string& saveFile);
-    void loadGame(const string& saveFile);
+    Game();
+    void start(); //pusti hru
+    void saveGame(const string &saveFile); //ulozi hru
+    void loadGame(const string &saveFile); //nahraje hru
 };
 
-#endif  // GAME_H
+#endif // GAME_H

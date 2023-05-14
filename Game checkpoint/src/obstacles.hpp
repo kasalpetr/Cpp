@@ -2,7 +2,7 @@
 #define OBSTACLES_H
 
 #include <vector>
-
+//prekazky na mape
 class Obstacles {
 private:
     // Vlastnosti překážek

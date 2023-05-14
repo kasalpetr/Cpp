@@ -15,21 +15,17 @@ using namespace std;
 class Board {
 private:
     // Interní datové struktury pro reprezentaci desky
-    vector<Ant> Ants;
-    vector<AntHill> AntsHill;
-    vector<Obstacles> Obstacles;
+    vector<Ant> Ants; //mravenci na desce
+    vector<AntHill> AntsHill; // mraveniste na desce
+    vector<Obstacles> Obstacles; //prekazky na desce
 
 public:
     Board(vector<AntHill> AntsHill, vector<Obstacles> Obstacles);
-    void loadMap(const string& mapFile);
-    void placeAntHill(AntHill* antHill, const Position& position);
-    void placeObstacles(Obstacles* obstacles, const Position& position);
-    AntHill* getAntHill(const Position& position);
-    void moveAntHill(AntHill* antHill, const Position& newPosition);
-    void removeAntHill(AntHill* antHill);
-    vector<Ant*> getAnts(const Position& position);
-    void moveAnt(Ant* ant, const Position& newPosition);
-    void removeAnt(Ant* ant);
+    void loadMap(const string& mapFile); //nahraje mapu
+    void placeAntHill(AntHill* antHill, const Position& position); //položi mraveniste kde ma byt
+    void placeObstacles(Obstacles* obstacles, const Position& position); //polozi prekazky tam kde ma byt
+    void moveAnt(Ant* ant, const Position& newPosition); //pohyb mravencu
+    void removeAnt(Ant* ant); //odstraneni mravencu
 };
 
 #endif  // BOARD_H

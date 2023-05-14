@@ -7,7 +7,7 @@ private:
 
 public:
     AntBehaviorABS();
-    virtual void ApplyType() = 0;
+    virtual void ApplyType() = 0; // prirazeni typu k mravenci
 };
 
 #endif  // ANTBEHAVIORABS_H

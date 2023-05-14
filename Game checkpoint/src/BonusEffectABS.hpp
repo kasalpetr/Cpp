@@ -4,9 +4,10 @@
 class BonusEffectABS {
 private:
     // Vlastnosti bonusového efektu
-
+    int price;
 public:
-    virtual void applyEffect() = 0;
+    BonusEffectABS(int price);
+    virtual void applyEffect() = 0; //přida effect danému mravenisti
 };
 
 #endif  // BONUSEFFECTABS_H
