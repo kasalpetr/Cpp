@@ -1,5 +1,0 @@
-První oblastí, kde lze využít polymorfismus, jsou efekty bonusů pro mraveniste. Vytvořím si abstraktní třídu BonusEffectABS, která definuje společný rozhraní pro všechny bonusové efekty. Poté budu implementovat konkrétní bonusové efekty jako odvozené třídy od BonusEffect, například faster, cheaper, stronger, atd. Díky tomuto se mi zjednoduší případná práce s bonusy a zoroven splnim povinou část semestrální práce a to že budu mít nějaké bonusy k mravenisti.
-
-Dalším místem, kde využiju polymorfismus, je v různých druzích chování mravenců. Zadefinuju si abstraktní třídu AntBehaviorABS, která reprezentuje základní chování mravenců. Potom již můžu implementovat konkrétní chování jako odvozené třídy, například normal, defender, quick, atd. Každá třída může mít svou vlastní implementaci metod.
-
-Tyto místa kde budu používat polymorfismus mi pomůže následně upravovat jednotlive bonusy jak u mravencu tak i u mravenist obecne. Bude jednodussi pridavani nových bonusu a správa těch aktualních. Zaroven díky tomu bude kod prehlednejsi.

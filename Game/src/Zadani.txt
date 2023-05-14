@@ -1,0 +1,78 @@
+Hra: Ant wars
+
+originalni zadani z PT
+
+Tato semestrální práce patří do kategorie her. Vaším cílem je vytvořit konkrétní hru, která bude modifikovatelná prostřednictvím konfiguračních souborů. Nesnažte se všechny hodnoty definovat přímo v kódu (a to ani pomocí konstant). Umístěte je do konfiguračních souborů (jednoho nebo více), které váš program bude načítat.
+
+Naprogramujte jednoduchou hru na způsob války několika mravenčích klanů pro jednoho hráče proti několik nepřátelům ovládaných počítačem.
+
+Herní deska je reprezentována mraveništi ve kterých se nachází mravenci. Uživatel nebo počítačový hráč může ovládat mravence tím, že jim dá jako cíl jiné mraveniště. Mravenci se pak postupně přesunou do nového cíle. Pokud po cestě narazí na nepřátelského mravence, dojde k souboji. Na cizí mraveniště mravenci útočí, vlastní posilují.
+
+Hra musí splňovat následující funkcionality:
+
+Impementujte jednoduchou AI řídící organizaci mravenců (náhodné tahy nestačí).
+
+Implementujte "talentový strom" bonusů (alespoň pět různých), který umožní vylepšovat jednotlivá mraveniště (př. rychlejší vytváření mravenců, větší obrana, silnější mravenci, …). Některé bonusy je možné aktivovat jen pokud aktivujeme nějaký jiný bonus (prerekvizita).
+
+Hra musí být konfigurovatelná ze souboru:
+
+lze načítat mapy (př. pozice mravenišť, překážek, …),
+
+definice základních bonusů a talentového stromu bonusů (př. cena za aktivaci, efekt, prerekvizity, …).
+
+Hra umožňuje uložit rozehranou hru a zase ji načíst.
+
+Není nutné používat grafické knihovny, hra se dá vykreslit i v terminálu, např.:
+
+##################################################
+#                                                #
+#                                                #
+#     █████           █████                      #
+#     █A13█aaaaaaaaaaa█B20█                      #
+#     █████           █████                      #
+#                          b                     #
+#                          b                     #
+#                           b                    #
+#########################   b              █████ #
+#                            b             █W03█ #
+#                            y             █████ #
+#                             y         -ww      #
+#                             y     <---         #
+#       █████                  █████       █████ #
+#       █Z06█zzzzz------------>█Y30█<-xx--x█X01█ #
+#       █████                  █████       █████ #
+#                                                #
+##################################################
+Kde lze využít polymorfismus? (doporučené)
+
+efekty bonusů: více mravenců za kolo, levnější bonusy, větší obrana, …
+
+různé druhy chování mravenců: běžné, obránce (při prvním kontaktu s nepřítelem postaví zeď, kterou musí nepřítel nejprve rozbít), rychlík (nemusí se pohybovat jen po cestách, ale může se pohybovat i přímo), …
+
+ovládání: hráč vs. AI (různé druhy)
+
+uživatelské rozhraní: konzole, ncurses, SDL, OpenGL (různé varianty), …
+
+//konec zadani z PT
+
+Vybral jsem si tema Ant Wars, toto tema budu spracovavat jako tahovou strategickou hru. Na vykreslování buu používat terminal. Mapy bude možné načítat ze souboru a zároven bude možné uložit hru. která půjde nasledne načíst. 
+
+Na herní ploše budou mraveniště, mravenci a poté překazky aby mapa nebyla tak monotématická.
+
+Hrač bude mít na začátku 1 mraveniště, protihráč(počítač) bude mít také 1 mraveniště, ukolem hrace bude zničit protivnikovu kolonii mravenců. Kolonie mravenců se zníčí tím způsobem že přebereme všechna protihráčovy mraveniště. Mraveniste bude mít nejaky pocet mravencu kteří budo uvnitř a bránit. Pokud svými mravenci zaútočíme na některé mraveniště tak ho přebereme až tehdy, kdy zabijeme všechny mravence uvnitř. Zabiti mravenců se bude uskutecnovat tak že pokud budou utocit 5 mravenců dohromady s utocnou silou 10 a bránit 10 mravenců dohromady s útočnou sílou 20. Tak zemřou všichni útočnící a obránců zahyne jenom 5. Toto se bude samozřejmě vykonávat tahově. 
+
+Za každé mraveniště bude hráč po určitém počtu kol dostavat bonusove body. Za tyto body si bude moct koupit vylepšení pro svoje mraveniste. Napr. mravenci z tohoto mraveniste budou silnejsi, rychlejsi, zvetsi se maximalni hodnota mravencu v mravenisti atd..
+
+Zároveň v každém mraveniště budeme moct pri obsazeni mravenci vybrat jaky druh mravencu se zde bude stavět.
+
+(Na mém gitlabu je aktulní postup mé semestrální práce)
+
+
+polymorfismus
+
+
+První oblastí, kde lze využít polymorfismus, jsou efekty bonusů pro mraveniste. Vytvořím si abstraktní třídu BonusEffectABS, která definuje společný rozhraní pro všechny bonusové efekty. Poté budu implementovat konkrétní bonusové efekty jako odvozené třídy od BonusEffect, například faster, cheaper, stronger, atd. Díky tomuto se mi zjednoduší případná práce s bonusy a zoroven splnim povinou část semestrální práce a to že budu mít nějaké bonusy k mravenisti.
+
+Dalším místem, kde využiju polymorfismus, je v různých druzích chování mravenců. Zadefinuju si abstraktní třídu AntBehaviorABS, která reprezentuje základní chování mravenců. Potom již můžu implementovat konkrétní chování jako odvozené třídy, například normal, defender, quick, atd. Každá třída může mít svou vlastní implementaci metod.
+
+Tyto místa kde budu používat polymorfismus mi pomůže následně upravovat jednotlive bonusy jak u mravencu tak i u mravenist obecne. Bude jednodussi pridavani nových bonusu a správa těch aktualních. Zaroven díky tomu bude kod prehlednejsi.
