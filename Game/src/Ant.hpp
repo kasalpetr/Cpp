@@ -12,6 +12,7 @@ private:
     int level; // level mravence
     int strenght; // sila mravence
     int defend; // obrana sila mravence
+    AntHill home;
 public:
     Ant(int id, int level, int strenght, int defend);
     void moveTo(const AntHill &target); //pohyb mravence

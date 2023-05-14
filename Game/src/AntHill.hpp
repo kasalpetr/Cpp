@@ -10,12 +10,12 @@ private:
     int id;
     int level;
     int max_ants;
-    vector<BonusEffectABS> bonusy;
+    vector<BonusEffectABS*> bonuses;
 public:
     AntHill(int id, int level, int max_ants);
     void build();
     void upgrade();
-    void activateBonus(BonusEffectABS &bonus);
+    void activateBonus(BonusEffectABS* Bonus);
 };
 
 #endif  // ANTHILL_H
