@@ -4,12 +4,12 @@
 class Bot
 {
 private:
-    // privatní metody pro zjistený optimálního pro počítač
+    // privatní metody pro zjistený optimálního tahu pro počítač
     void findMove();
 
 public:
     Bot();
-    void Move();
+    void Move(); //provedeni tahu
 };
 
 #endif // BOT_H

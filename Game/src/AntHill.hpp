@@ -13,9 +13,9 @@ private:
     vector<BonusEffectABS*> bonuses;
 public:
     AntHill(int id, int level, int max_ants);
-    void build();
-    void upgrade();
-    void activateBonus(BonusEffectABS* Bonus);
+    void build(); //postaveni pri sestavovani mapy
+    void upgrade(); //vylepseni lvl mraveniste
+    void activateBonus(BonusEffectABS* Bonus);//pridani bonusu do vektoru
 };
 
 #endif  // ANTHILL_H

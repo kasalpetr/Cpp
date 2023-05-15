@@ -59,11 +59,13 @@ uživatelské rozhraní: konzole, ncurses, SDL, OpenGL (různé varianty), …
 
 Vybral jsem si tema Ant Wars, toto tema budu spracovavat jako tahovou strategickou hru. Na vykreslování buu používat terminal. Mapy bude možné načítat ze souboru a zároven bude možné uložit hru. která půjde nasledne načíst. 
 
+Tahy budou probihat tak že hrac bude moct vykonat vždy jednu činost (koupit bonus,presunout mravence, začít útočit,..) zároven se utocici(presouvajici) mravenci posunou o jednu pozici na konci kola (až odehraje hrac i protihráč)
+
 Na herní ploše budou mraveniště, mravenci a poté překazky aby mapa nebyla tak monotématická.
 
 Hrač bude mít na začátku 1 mraveniště, protihráč(počítač) bude mít také 1 mraveniště, ukolem hrace bude zničit protivnikovu kolonii mravenců. Kolonie mravenců se zníčí tím způsobem že přebereme všechna protihráčovy mraveniště. Mraveniste bude mít nejaky pocet mravencu kteří budo uvnitř a bránit. Pokud svými mravenci zaútočíme na některé mraveniště tak ho přebereme až tehdy, kdy zabijeme všechny mravence uvnitř. Zabiti mravenců se bude uskutecnovat tak že pokud budou utocit 5 mravenců dohromady s utocnou silou 10 a bránit 10 mravenců dohromady s útočnou sílou 20. Tak zemřou všichni útočnící a obránců zahyne jenom 5. Toto se bude samozřejmě vykonávat tahově. 
 
-Za každé mraveniště bude hráč po určitém počtu kol dostavat bonusove body. Za tyto body si bude moct koupit vylepšení pro svoje mraveniste. Napr. mravenci z tohoto mraveniste budou silnejsi, rychlejsi, zvetsi se maximalni hodnota mravencu v mravenisti atd..
+Za každé mraveniště bude hráč po určitém počtu kol dostavat body. Za tyto body si bude moct koupit vylepšení pro svoje mraveniste. Napr. mravenci z tohoto mraveniste budou silnejsi, rychlejsi, zvetsi se maximalni hodnota mravencu v mravenisti atd.. Nebo bude možné si zvětšit level mraveniště za tyto body -> větší počet mravenců(i bez bonusu,...).
 
 Zároveň v každém mraveniště budeme moct pri obsazeni mravenci vybrat jaky druh mravencu se zde bude stavět.
 
