@@ -4,14 +4,16 @@
 #include <vector>
 #include "BonusEffectABS.hpp"
 
+
 class AntHill {
 private:
     // Vlastnosti mraveniště
     int id;
     int level;
     int max_ants;
-    vector<BonusEffectABS*> bonuses;
+    std::vector<BonusEffectABS*> bonuses;
 public:
+    AntHill();
     AntHill(int id, int level, int max_ants);
     void build(); //postaveni pri sestavovani mapy
     void upgrade(); //vylepseni lvl mraveniste

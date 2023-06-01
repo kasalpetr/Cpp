@@ -4,6 +4,9 @@
 #include <string>
 #include "Board.hpp"
 #include "Bot.hpp"
+#include <iostream>
+
+using namespace std;
 
 class Game
 {
@@ -15,8 +18,9 @@ public:
     void start(); //pusti hru
     void player(); //tah hrace
     void bot(); //tah hrace
-    void saveGame(const string &saveFile); //ulozi hru
-    void loadGame(const string &saveFile); //nahraje hru
+
+    void saveGame(const string saveFile); //ulozi hru
+    void loadGame(const string saveFile); //nahraje hru
 };
 
 #endif // GAME_H
