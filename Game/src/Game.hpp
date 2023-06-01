@@ -2,9 +2,15 @@
 #define GAME_H
 
 #include <string>
+#include <limits>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <dirent.h>
+#include <algorithm>
+
 #include "Board.hpp"
 #include "Bot.hpp"
-#include <iostream>
 
 using namespace std;
 
@@ -12,10 +18,11 @@ class Game
 {
 private:
     // Interní proměnné pro reprezentaci stavu hry
-    
+    string MapSelect(); //vyber mapy
+    string map; // číslo mapy 
 public:
     Game();
-    void start(); //pusti hru
+    void start(); //pusti hru -> vyběr mapy -> vyběr obtížnosti
     void player(); //tah hrace
     void bot(); //tah hrace
 
