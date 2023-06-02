@@ -52,6 +52,7 @@ void Game::start()
 Board Board;
 map = MapSelect(); //do promene map se uloží číslo mapy
 Board.loadMap(map); //načte se mapa do souboru
+Board.printBoard(); // vypise jak vypadá mapa
 }
 
 void Game::player()

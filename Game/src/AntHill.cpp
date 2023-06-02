@@ -2,9 +2,11 @@
 
 AntHill::AntHill(){}
 
-AntHill::AntHill(int id, int level, int max_ants)
-    : id(id), level(level), max_ants(max_ants)
+AntHill::AntHill(int id, int x, int y)
+    : id(id)
 {
+ position.setX(x);
+ position.setY(y);
 }
 
 void AntHill::build()

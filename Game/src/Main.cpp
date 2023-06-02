@@ -7,8 +7,8 @@ int main(int argc, char const *argv[])
     Game game;
     int option;
 
-    //pusteni hry 3 moznosti -> Nová hra, načíst hru, Ukončit hru
-    while (true)
+    
+    while (true) //pusteni hry 3 moznosti -> Nová hra, načíst hru, Ukončit hru 
     {
         /* code */
 

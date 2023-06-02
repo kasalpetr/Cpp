@@ -1,4 +1,7 @@
 #include "Position.hpp"
+Position::Position()
+{
+}
 
 Position::Position(int x, int y)
 {
