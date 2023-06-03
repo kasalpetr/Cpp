@@ -22,3 +22,11 @@ void AntHill::upgrade()
 void AntHill::activateBonus(BonusEffectABS* bonus)
 {
 }
+
+Position AntHill::getPosition() const{
+    return position;
+}
+
+int AntHill::getId() const{
+    return id;
+}

@@ -6,6 +6,37 @@ Board::Board() {}
 Board::Board(vector<AntHill> antHills, vector<Obstacles> obstacles)
     : AntsHill_onBoard(antHills), Obstacles_onBoard(obstacles) {}
 
+void Board::placeAntHill(AntHill *antHill, const Position &position)
+{
+    // implementace umístění mraveniště na desku
+}
+
+void Board::placeObstacles(Obstacles *obstacles, const Position &position)
+{
+    // implementace umístění překážek na desku
+}
+
+bool Board::checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obstacles_onBoard, int x, int y)
+{
+    for (const AntHill &anthill : AntsHill_onBoard)
+    {
+        if (!checkAroundPlace(anthill.getPosition().getX(), anthill.getPosition().getY(), x, y))
+        {
+            return false; // Duplicitní mraveniště
+        }
+    }
+    return true; // Žádné duplicitní mraveniště
+}
+
+bool Board::checkAroundPlace(int x, int y, int new_x, int new_y)
+{
+    if (abs(new_x - x) <= 1 && abs(new_y - y) <= 1)
+    {
+        return false; // New coordinates are touching or overlapping the old coordinates
+    }
+    return true;
+}
+
 void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
 {
     x_board = 0;
@@ -31,12 +62,13 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                 int id = 0; // Inkrementace ID před cyklem while
                 int x = 0;
                 int y = 0;
-                while (getline(file, line) && line.find("-") != string::npos)
+                while (getline(file, line) && line.find("-") != string::npos) // najde to pomlcku -> další mraveniste
                 {
+
                     getline(file, line); // Načtení řádku s "x:"
                     try
                     {
-                         x = stoi(line.substr(line.find(":") + 1));
+                        x = stoi(line.substr(line.find(":") + 1));
                     }
                     catch (const std::invalid_argument &e)
                     {
@@ -46,14 +78,14 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                     getline(file, line); // Načtení řádku s "y:"
                     try
                     {
-                         y = stoi(line.substr(line.find(":") + 1));
+                        y = stoi(line.substr(line.find(":") + 1));
                     }
                     catch (const std::invalid_argument &e)
                     {
                         continue;
                     }
 
-                    if ((x < x_board - 1 && x > 1) || (y < y_board - 1 && y > 1))
+                    if (((x < x_board - 1 && x > 1) && (y < y_board - 1 && y > 1)) && checkplace(AntsHill_onBoard, Obstacles_onBoard, x, y))
                     {
                         AntsHill_onBoard.push_back(AntHill(id, x, y)); // dám mraveniste do vektoru
                         id++;                                          // Inkrementace ID pro další mraveniště
@@ -77,15 +109,6 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
         y_board = 25;
     }
 }
-void Board::placeAntHill(AntHill *antHill, const Position &position)
-{
-    // implementace umístění mraveniště na desku
-}
-
-void Board::placeObstacles(Obstacles *obstacles, const Position &position)
-{
-    // implementace umístění překážek na desku
-}
 
 void Board::moveAnt(Ant *ant, const Position &newPosition)
 {
@@ -103,20 +126,31 @@ void Board::printBoard()
     {
         for (int col = 0; col < x_board; col++)
         {
-            if (row == 0 || row == y_board - 1 || col == 0 || col == x_board - 1)
+            bool isAntHill = false;
+            for (const AntHill &anthill : AntsHill_onBoard)
             {
-                cout << "\033[1;31m#\033[0m";
+                if (anthill.getPosition().getX() == col && anthill.getPosition().getY() == row)
+                {
+                    std::cout << "\x1B[43m#"; // Escape sekvence pro nastavení žlutého pozadí
+                    std::cout << "\x1B[0m";   // Resetování barev
+                    isAntHill = true;
+                    break;
+                }
             }
-            else
+
+            if (!isAntHill)
             {
-                cout << " ";
+                if (row == 0 || row == y_board - 1 || col == 0 || col == x_board - 1)
+                {
+                    std::cout << "\x1B[41m#"; // Escape sekvence pro nastavení červeného pozadí
+                    std::cout << "\x1B[0m"; // Resetování barev
+                }
+                else
+                {
+                    cout << " ";
+                }
             }
         }
         cout << endl;
-    }
-
-    for (AntHill &anthill : AntsHill_onBoard)
-    {
-        cout << "id:" << anthill.id << " X:" << anthill.position.getX() << " Y:" << anthill.position.getY() << endl;
     }
 }
