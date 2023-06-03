@@ -1,14 +1,28 @@
 #ifndef OBSTACLES_H
 #define OBSTACLES_H
 
+#include "ObjectOnBoard.hpp"
+#include "Position.hpp"
+#include <memory>
+#include<iostream>
 #include <vector>
+
+using namespace std;
 //prekazky na mape
-class Obstacles {
+class Obstacles : public ObjectOnBoard{
 private:
+Position position;
     // Vlastnosti překážek
-    int id;
 public:
-    Obstacles(int id);
+    Obstacles();
+    Position getPositon() const;
+    void print() override;
+};
+
+class EmptySpace : public ObjectOnBoard {
+public:
+    EmptySpace();
+    void print() override;
 };
 
 #endif  // OBSTACLES_H

@@ -6,14 +6,21 @@ Board::Board() {}
 Board::Board(vector<AntHill> antHills, vector<Obstacles> obstacles)
     : AntsHill_onBoard(antHills), Obstacles_onBoard(obstacles) {}
 
-void Board::placeAntHill(AntHill *antHill, const Position &position)
+void Board::placeAntHill()
 {
-    // implementace umístění mraveniště na desku
+    // implementace umístění mraveništ na desku
+    for (const AntHill &anthill : AntsHill_onBoard)
+    {
+        int x = anthill.getPosition().getX();
+        int y = anthill.getPosition().getY();
+        board_for_print[y][x] = make_unique<AntHill>(anthill);
+    }
 }
 
-void Board::placeObstacles(Obstacles *obstacles, const Position &position)
+void Board::placeObstacles(int x, int y)
 {
-    // implementace umístění překážek na desku
+    // Implementace umístění překážek na desku
+    board_for_print[y][x] = make_unique<Obstacles>();
 }
 
 bool Board::checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obstacles_onBoard, int x, int y)
@@ -37,6 +44,27 @@ bool Board::checkAroundPlace(int x, int y, int new_x, int new_y)
     return true;
 }
 
+void Board::BoardForPrintMake(int y_board, int x_board)
+{
+    board_for_print.resize(x_board);
+    for (int row = 0; row < x_board; row++)
+    {
+        board_for_print[row].resize(y_board);
+        for (int col = 0; col < y_board; col++)
+        {
+            if (row == 0 || row == x_board - 1 || col == 0 || col == y_board - 1)
+            {
+                board_for_print[row][col] = std::make_unique<Obstacles>();
+            }
+            else
+            {
+                board_for_print[row][col] = std::make_unique<EmptySpace>();
+            }
+        }
+    }
+}
+
+
 void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
 {
     x_board = 0;
@@ -47,18 +75,19 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
     if (file.is_open())
     {
         string line;
+        getline(file, line);
+        line.find("x: "); // najde hodnotu x
+        Board::x_board = stoi(line.substr(3));
+        getline(file, line);
+        line.find("y: "); // najde hodnotu y
+        Board::y_board = stoi(line.substr(3));
+        BoardForPrintMake(x_board, y_board);
+
         while (getline(file, line)) // prochazi vsechny radky
         {
-            if (line.find("x: ") == 0) // najde hodnotu x
+            if (line.find("anthills:") != string::npos) // našlo to anthills
             {
-                Board::x_board = stoi(line.substr(3));
-            }
-            else if (line.find("y: ") == 0) // najde hodnotu y
-            {
-                Board::y_board = stoi(line.substr(3));
-            }
-            else if (line.find("anthills:") != string::npos) // našlo to anthills
-            {
+
                 int id = 0; // Inkrementace ID před cyklem while
                 int x = 0;
                 int y = 0;
@@ -70,7 +99,7 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                     {
                         x = stoi(line.substr(line.find(":") + 1));
                     }
-                    catch (const std::invalid_argument &e)
+                    catch (const invalid_argument &e)
                     {
                         continue;
                     }
@@ -80,15 +109,37 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                     {
                         y = stoi(line.substr(line.find(":") + 1));
                     }
-                    catch (const std::invalid_argument &e)
+                    catch (const invalid_argument &e)
                     {
                         continue;
                     }
 
                     if (((x < x_board - 1 && x > 1) && (y < y_board - 1 && y > 1)) && checkplace(AntsHill_onBoard, Obstacles_onBoard, x, y))
                     {
-                        AntsHill_onBoard.push_back(AntHill(id, x, y)); // dám mraveniste do vektoru
-                        id++;                                          // Inkrementace ID pro další mraveniště
+                        AntHill new_Anthill(id, x, y);
+                        AntsHill_onBoard.push_back(new_Anthill); // dám mraveniste do vektoru
+                        id++;                                    // Inkrementace ID pro další mraveniště
+                    }
+                }
+            }
+            else if (line.find("obstacles:") != string::npos && line.substr(0, 10) == "obstacles:")
+            {
+                cout << "random" << endl;
+                while (getline(file, line) && !line.empty())
+                {
+                    
+                    // Rozdělení řádku podle čárky na souřadnice x a y
+                    size_t commaPos = line.find(",");
+                    if (commaPos != string::npos)
+                    {
+                        int x = stoi(line.substr(0, commaPos));
+                        int y = stoi(line.substr(commaPos + 1));
+
+                        // Přidání překážky do vektoru
+                        if (((x < x_board - 1 && x > 1) && (y < y_board - 1 && y > 1)) && checkplace(AntsHill_onBoard, Obstacles_onBoard, x, y))
+                        {
+                            placeObstacles(x,y);
+                        }
                     }
                 }
             }
@@ -108,6 +159,8 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
         x_board = 100;
         y_board = 25;
     }
+
+    placeAntHill();
 }
 
 void Board::moveAnt(Ant *ant, const Position &newPosition)
@@ -122,34 +175,11 @@ void Board::removeAnt(Ant *ant)
 
 void Board::printBoard()
 {
-    for (int row = 0; row < y_board; row++)
+    for (long unsigned int row = 0; row < board_for_print.size(); row++)
     {
-        for (int col = 0; col < x_board; col++)
+        for (long unsigned int col = 0; col < board_for_print[row].size(); col++)
         {
-            bool isAntHill = false;
-            for (const AntHill &anthill : AntsHill_onBoard)
-            {
-                if (anthill.getPosition().getX() == col && anthill.getPosition().getY() == row)
-                {
-                    std::cout << "\x1B[43m#"; // Escape sekvence pro nastavení žlutého pozadí
-                    std::cout << "\x1B[0m";   // Resetování barev
-                    isAntHill = true;
-                    break;
-                }
-            }
-
-            if (!isAntHill)
-            {
-                if (row == 0 || row == y_board - 1 || col == 0 || col == x_board - 1)
-                {
-                    std::cout << "\x1B[41m#"; // Escape sekvence pro nastavení červeného pozadí
-                    std::cout << "\x1B[0m"; // Resetování barev
-                }
-                else
-                {
-                    cout << " ";
-                }
-            }
+            board_for_print[row][col]->print();
         }
         cout << endl;
     }

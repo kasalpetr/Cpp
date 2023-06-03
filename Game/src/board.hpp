@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include <filesystem>
-
+#include <memory>
 #include "AntHill.hpp"
 #include "Ant.hpp"
 #include "Position.hpp"
@@ -23,11 +23,13 @@ private:
     vector<Obstacles> Obstacles_onBoard; // prekazky na desce
     int x_board;
     int y_board;
-
-    void placeAntHill(AntHill *antHill, const Position &position);       // položi mraveniste kde ma byt
-    void placeObstacles(Obstacles *obstacles, const Position &position); // polozi prekazky tam kde ma 
+    vector<vector<unique_ptr<ObjectOnBoard>>> board_for_print; //mapa 2d pole
+    void placeAntHill();       // položi mraveniste kde ma byt
+    void placeObstacles(int x, int y); // polozi prekazky tam kde ma 
     bool checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obstacles_onBoard, int x, int y ); //vraci false pokud jsou 2 veci na stejným miste
     bool checkAroundPlace(int x, int y, int new_x, int new_y);
+    void BoardForPrintMake(int x_board, int y_board);
+
 public:
     Board();
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);

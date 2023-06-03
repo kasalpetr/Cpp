@@ -23,6 +23,11 @@ void AntHill::activateBonus(BonusEffectABS* bonus)
 {
 }
 
+void AntHill::print(){
+     cout << "\x1B[41m#"; // Escape sekvence pro nastavení červeného pozadí
+    cout << "\x1B[0m";   // Resetování barev
+}
+
 Position AntHill::getPosition() const{
     return position;
 }

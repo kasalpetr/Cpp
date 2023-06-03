@@ -24,3 +24,6 @@ void Ant::specialAbility(AntBehaviorABS &ability)
 {
     ability.ApplyType();
 }
+void Ant::print(){
+    
+}

@@ -3,10 +3,15 @@
 
 #include "BonusEffectABS.hpp"
 #include "Position.hpp"
+#include "ObjectOnBoard.hpp"
+
 #include <vector>
+#include <memory>
+#include <iostream>
+
 using namespace std;
 
-class AntHill {
+class AntHill : public ObjectOnBoard {
 private:
     // Vlastnosti mraveniště
     int level = 1;
@@ -15,7 +20,6 @@ private:
     int id;
     Position position;
 public:
-
     AntHill();
     AntHill(int id, int x, int y);
     void build(); //postaveni pri sestavovani mapy
@@ -23,6 +27,7 @@ public:
     void activateBonus(BonusEffectABS* Bonus);//pridani bonusu do vektoru
     Position getPosition() const;
     int getId() const;
+    void print() override;
 };
 
 #endif  // ANTHILL_H
