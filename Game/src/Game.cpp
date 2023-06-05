@@ -52,7 +52,17 @@ void Game::start()
 Board Board;
 map = MapSelect(); //do promene map se uloží číslo mapy
 Board.loadMap(map); //načte se mapa do souboru
+while (1)
+{
 Board.printBoard(); // vypise jak vypadá mapa
+Board.printAnthills();
+Board.printMove();
+Board.MakeMove();
+if (Board.checkWin())
+{
+    break;
+}
+}
 }
 
 void Game::player()

@@ -30,6 +30,9 @@ private:
     bool checkAroundPlace(int x, int y, int new_x, int new_y);
     void BoardForPrintMake(int x_board, int y_board);
 
+    //print metody
+    void printAnthillOwner(int owner);
+    char printChoiceOfMove();
 public:
     Board();
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);
@@ -37,7 +40,13 @@ public:
 
     void moveAnt(Ant *ant, const Position &newPosition); // pohyb mravencu
     void removeAnt(Ant *ant);                            // odstraneni mravencu
+    bool checkWin();
+    void MakeMove();
+    
+    //print metody
     void printBoard(); //tisk herní plochy
+    void printAnthills();
+    void printMove(); //tisk výběru tahu
 };
 
 #endif // BOARD_H

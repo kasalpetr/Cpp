@@ -17,7 +17,7 @@ private:
 public:
     Ant(int id, int level, int strenght, int defend);
     void moveTo(const AntHill &target); //pohyb mravence
-    void attack(const AntHill &target); // utok mravence
+    c
     void defend(); // obrana
     void specialAbility(AntBehaviorABS &ability); // specialni schopnosti(utocnik, obrance, rychlejsi mravenec)
     void print() override;

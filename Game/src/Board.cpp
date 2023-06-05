@@ -6,7 +6,7 @@ Board::Board() {}
 Board::Board(vector<AntHill> antHills, vector<Obstacles> obstacles)
     : AntsHill_onBoard(antHills), Obstacles_onBoard(obstacles) {}
 
-void Board::placeAntHill()
+void Board::placeAntHill() // polozi anthill na mapu
 {
     // implementace umístění mraveništ na desku
     for (const AntHill &anthill : AntsHill_onBoard)
@@ -17,7 +17,7 @@ void Board::placeAntHill()
     }
 }
 
-void Board::placeObstacles(int x, int y)
+void Board::placeObstacles(int x, int y) //polozi obstacles na mapu
 {
     // Implementace umístění překážek na desku
     board_for_print[y][x] = make_unique<Obstacles>();
@@ -35,7 +35,7 @@ bool Board::checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obs
     return true; // Žádné duplicitní mraveniště
 }
 
-bool Board::checkAroundPlace(int x, int y, int new_x, int new_y)
+bool Board::checkAroundPlace(int x, int y, int new_x, int new_y) // kontroluje 3x3 bloky okolo mraveniste
 {
     if (abs(new_x - x) <= 1 && abs(new_y - y) <= 1)
     {
@@ -44,7 +44,7 @@ bool Board::checkAroundPlace(int x, int y, int new_x, int new_y)
     return true;
 }
 
-void Board::BoardForPrintMake(int y_board, int x_board)
+void Board::BoardForPrintMake(int y_board, int x_board) //vytvoří 2d pole pro tisk mapy
 {
     board_for_print.resize(x_board);
     for (int row = 0; row < x_board; row++)
@@ -64,7 +64,30 @@ void Board::BoardForPrintMake(int y_board, int x_board)
     }
 }
 
+void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
+{ // tiskne id mravenist dle ownera
+    for (const AntHill &anthill : AntsHill_onBoard)
+    {
+        if (anthill.getOwner() == owner)
+        {
+            cout << anthill.getId() << " -> " << anthill.getNumberOfAnts() << " || ";
+        }
+    }
+}
 
+char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
+{
+    char choice = 0;
+    cout << "1: Útok" << endl;
+    cout << "2: Podpora" << endl;
+    cout << "3: nic"
+    cin >> choice;
+    system("clear");
+    printBoard();
+    return choice;
+}
+
+// public
 void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
 {
     x_board = 0;
@@ -127,7 +150,7 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                 cout << "random" << endl;
                 while (getline(file, line) && !line.empty())
                 {
-                    
+
                     // Rozdělení řádku podle čárky na souřadnice x a y
                     size_t commaPos = line.find(",");
                     if (commaPos != string::npos)
@@ -138,7 +161,7 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                         // Přidání překážky do vektoru
                         if (((x < x_board - 1 && x > 1) && (y < y_board - 1 && y > 1)) && checkplace(AntsHill_onBoard, Obstacles_onBoard, x, y))
                         {
-                            placeObstacles(x,y);
+                            placeObstacles(x, y);
                         }
                     }
                 }
@@ -173,7 +196,32 @@ void Board::removeAnt(Ant *ant)
     // implementace odstranění mravence z desky
 }
 
-void Board::printBoard()
+bool Board::checkWin() // kontroluje jestli někdo nevyhral
+{
+    return true;
+}
+
+void Board::MakeMove()
+{
+}
+
+void Board::printAnthills() //tiskne jak na tom jsou mraveniste
+{ // tisk aktuálních mravenist
+    cout << "Mraveniště hráče: ";
+    printAnthillOwner(1);
+    cout << endl;
+
+    cout << "Mraveniště neobsazené: ";
+    printAnthillOwner(0);
+    cout << endl;
+
+    cout << "Mraveniště počítače: ";
+    printAnthillOwner(2);
+    cout << "\n"
+         << endl;
+}
+
+void Board::printBoard() // tiskne mapu
 {
     for (long unsigned int row = 0; row < board_for_print.size(); row++)
     {
@@ -182,5 +230,28 @@ void Board::printBoard()
             board_for_print[row][col]->print();
         }
         cout << endl;
+    }
+}
+
+void Board::printMove() // zpracovava tisk a vyber ukonu 
+{ // tiskne možné tahy
+    char choice = printChoiceOfMove();
+    switch (choice)
+    {
+    case '1':
+        // Kód pro provedení akce Attack
+        cout << "Attack" << endl;
+        
+        break;
+    case '2':
+        // Kód pro provedení akce Support
+        cout << "Support" << endl;
+        break;
+    case '3':
+        // Kód pro provedení akce Support
+        break;
+    default:
+        cout << "Neplatná volba -> zvol něco jiného" << endl;
+        printMove();
     }
 }
