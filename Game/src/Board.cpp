@@ -17,7 +17,7 @@ void Board::placeAntHill() // polozi anthill na mapu
     }
 }
 
-void Board::placeObstacles(int x, int y) //polozi obstacles na mapu
+void Board::placeObstacles(int x, int y) // polozi obstacles na mapu
 {
     // Implementace umístění překážek na desku
     board_for_print[y][x] = make_unique<Obstacles>();
@@ -44,7 +44,11 @@ bool Board::checkAroundPlace(int x, int y, int new_x, int new_y) // kontroluje 3
     return true;
 }
 
-void Board::BoardForPrintMake(int y_board, int x_board) //vytvoří 2d pole pro tisk mapy
+void Board::MakeMove()
+{
+}
+
+void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro tisk mapy
 {
     board_for_print.resize(x_board);
     for (int row = 0; row < x_board; row++)
@@ -65,7 +69,7 @@ void Board::BoardForPrintMake(int y_board, int x_board) //vytvoří 2d pole pro 
 }
 
 void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
-{ // tiskne id mravenist dle ownera
+{                                        // tiskne id mravenist dle ownera
     for (const AntHill &anthill : AntsHill_onBoard)
     {
         if (anthill.getOwner() == owner)
@@ -80,11 +84,48 @@ char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
     char choice = 0;
     cout << "1: Útok" << endl;
     cout << "2: Podpora" << endl;
-    cout << "3: nic"
+    cout << "3: Bonus" << endl;
+    cout << "4: Nic" << endl;
+    cout << "5: Uložit" << endl;
     cin >> choice;
     system("clear");
     printBoard();
     return choice;
+}
+
+int Board::printChoiceAnthillFrom()
+{
+    int id;
+    for (const AntHill &anthill : AntsHill_onBoard)
+    {
+        if (anthill.getOwner() == 1)
+        {
+            cout << anthill.getId() << " -> " << anthill.getNumberOfAnts() << " || ";
+        }
+    }
+    cin >> id;
+    if (cin.fail())
+    {
+        cin.clear();                                         // Vynulovat příznaky chyby u cin
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignorovat zbylé znaky ve vstupním proudu až do konce řádku
+    }
+    else
+    {
+        for (const AntHill &anthill : AntsHill_onBoard)
+        {
+            if (anthill.getOwner() == 1)
+            {
+                if (anthill.getId() == id)
+                {
+                    return id;
+                }
+            }
+        }
+    }
+    system("clear");
+    printBoard();
+    cout << "Zadej svoje mraveniště odkud se vykoná akce" << endl;
+    return printChoiceAnthillFrom();
 }
 
 // public
@@ -201,12 +242,8 @@ bool Board::checkWin() // kontroluje jestli někdo nevyhral
     return true;
 }
 
-void Board::MakeMove()
-{
-}
-
-void Board::printAnthills() //tiskne jak na tom jsou mraveniste
-{ // tisk aktuálních mravenist
+void Board::printAnthills() // tiskne jak na tom jsou mraveniste
+{                           // tisk aktuálních mravenist
     cout << "Mraveniště hráče: ";
     printAnthillOwner(1);
     cout << endl;
@@ -233,22 +270,33 @@ void Board::printBoard() // tiskne mapu
     }
 }
 
-void Board::printMove() // zpracovava tisk a vyber ukonu 
-{ // tiskne možné tahy
+void Board::printMove() // zpracovava tisk a vyber ukonu
+{                       // tiskne možné tahy
     char choice = printChoiceOfMove();
+    int id_from = -1;
+    int id_to = -1;
     switch (choice)
     {
-    case '1':
-        // Kód pro provedení akce Attack
-        cout << "Attack" << endl;
-        
+    case '1':  // Kód pro provedení akce Attack
+        cout << "Útok z mraveniště" << endl;
+        id_from = printChoiceAnthillFrom(); //otazka odkud se zautoc
+        system("clear");
+        printBoard();
+        cout << "Kam chceš zaútočit" << endl;
+        id_to = AntsHill_onBoard[id_from].printAttackTo(AntsHill_onBoard); //kam se podpori
         break;
-    case '2':
-        // Kód pro provedení akce Support
-        cout << "Support" << endl;
+    case '2': // Kód pro provedení akce Support
+        cout << "Podpora z mraveniště" << endl;
+        id_from = printChoiceAnthillFrom(); //otazka odkud se podpori
+        AntsHill_onBoard[id_from].printSupportTo(AntsHill_onBoard); //kam se podpori
         break;
-    case '3':
-        // Kód pro provedení akce Support
+    case '3':// Kód pro provedení akce Bonus
+        cout << "Kam chces umistit bonus" << endl;
+        id_from = printChoiceAnthillFrom();
+        break;
+    case '4': // Kód pro provedení akce Nic
+        break;
+    case '5': // Kód pro provedení akce Uložit
         break;
     default:
         cout << "Neplatná volba -> zvol něco jiného" << endl;

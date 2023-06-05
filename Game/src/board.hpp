@@ -7,6 +7,8 @@
 #include <string>
 #include <filesystem>
 #include <memory>
+#include <limits>
+
 #include "AntHill.hpp"
 #include "Ant.hpp"
 #include "Position.hpp"
@@ -28,11 +30,13 @@ private:
     void placeObstacles(int x, int y); // polozi prekazky tam kde ma 
     bool checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obstacles_onBoard, int x, int y ); //vraci false pokud jsou 2 veci na stejným miste
     bool checkAroundPlace(int x, int y, int new_x, int new_y);
+    void MakeMove();
     void BoardForPrintMake(int x_board, int y_board);
 
     //print metody
     void printAnthillOwner(int owner);
     char printChoiceOfMove();
+    int printChoiceAnthillFrom();
 public:
     Board();
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);
@@ -41,8 +45,7 @@ public:
     void moveAnt(Ant *ant, const Position &newPosition); // pohyb mravencu
     void removeAnt(Ant *ant);                            // odstraneni mravencu
     bool checkWin();
-    void MakeMove();
-    
+
     //print metody
     void printBoard(); //tisk herní plochy
     void printAnthills();

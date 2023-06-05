@@ -8,7 +8,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
-
+#include<limits>
 using namespace std;
 
 class AntHill : public ObjectOnBoard {
@@ -34,8 +34,8 @@ public:
 
     //print metody
     void print() override;
-    void printAttackFrom(const vector<AntHill> &AntsHill_onBoard);
-    void printAttackTo(const vector<AntHill> &AntsHill_onBoard);
+    int printAttackTo(const vector<AntHill> &AntsHill_onBoard);
+    int printSupportTo(const vector<AntHill> &AntsHill_onBoard);
 
 };
 
