@@ -63,7 +63,7 @@ bool Game::start()
     while (1)
     {
         Board.printBoard(); // vypise jak vypadá mapa
-        Board.printAnthills();
+        Board.status();
         if (!Board.printMove())
         {
             break;

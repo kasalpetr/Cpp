@@ -142,32 +142,37 @@ bool Board::isValidPosition(int row, int col)
 
 void Board::MakeMoveBonus(int id_from)
 {
+    BonusMoreAnts effect1;
+    BonusStrongerAnts effect2;
+    BonusDefendAnts effect3;
+    BonusLevel effect4;
+    BonusFasterProduction effect5;
     // Výběr bonusu
-    if (AntsHill_onBoard[id_from].getlevel() >= 3)
+    if (AntsHill_onBoard[id_from].getlevel() >= tree_level)
     {
         cout << "Vyber bonus mas: " << money << "€" << endl;
         cout << "1. Více mravenců (max. hodnota)"
-             << "- 10€" << endl;
+             << "- " << effect1.getPrice() << "€" << endl;
         cout << "2. Silnější mravenci"
-             << "- 20€" << endl;
+             << "- " << effect2.getPrice() << "€" << endl;
         cout << "3. Silnější obrana mravenců"
-             << "- 20€" << endl;
+             << "- " << effect3.getPrice() << "€" << endl;
         cout << "4. Vyšší level mraveniště"
-             << "- 20€" << endl;
+             << "- " << effect4.getPrice() << "€" << endl;
         cout << "5. Rychlejší produkce"
-             << "- 30€" << endl;
+             << "- " << effect5.getPrice() << "€" << endl;
     }
     else
     {
         cout << "Vyber bonus mas: " << money << "€" << endl;
         cout << "1. Více mravenců (max. hodnota)"
-             << "- 10€" << endl;
+             << "- " << effect1.getPrice() << "€" << endl;
         cout << "2. Silnější mravenci"
-             << "- 20€" << endl;
+             << "- " << effect2.getPrice() << "€" << endl;
         cout << "3. Silnější obrana mravenců"
-             << "- 20€" << endl;
+             << "- " << effect3.getPrice() << "€" << endl;
         cout << "4. Vyšší level mraveniště"
-             << "- 20€" << endl;
+             << "- " << effect4.getPrice() << "€" << endl;
     }
 
     char choice;
@@ -176,10 +181,13 @@ void Board::MakeMoveBonus(int id_from)
     // Zpracování výběru bonusu
     switch (choice)
     {
+
     case '1':
-        if (money >= 10)
+
+        if (money >= effect1.getPrice())
         {
-            money = money - 10;
+            money = money - effect1.getPrice();
+            effect1.applyEffect(AntsHill_onBoard[id_from]);
         }
         else
         {
@@ -190,9 +198,10 @@ void Board::MakeMoveBonus(int id_from)
 
         break;
     case '2':
-        if (money >= 20)
+        if (money >= effect2.getPrice())
         {
-            money = money - 20;
+            money = money - effect2.getPrice();
+            effect2.applyEffect(AntsHill_onBoard[id_from]);
         }
         else
         {
@@ -203,9 +212,10 @@ void Board::MakeMoveBonus(int id_from)
 
         break;
     case '3':
-        if (money >= 20)
+        if (money >= effect3.getPrice())
         {
-            money = money - 20;
+            money = money - effect3.getPrice();
+            effect3.applyEffect(AntsHill_onBoard[id_from]);
         }
         else
         {
@@ -215,11 +225,10 @@ void Board::MakeMoveBonus(int id_from)
         }
         break;
     case '4':
-        if (money >= 20)
+        if (money >= effect4.getPrice())
         {
-            BonusLevel effect;
-            money = money - 20;
-            effect.applyEffect(AntsHill_onBoard[id_from]);
+            money = money - effect4.getPrice();
+            effect4.applyEffect(AntsHill_onBoard[id_from]);
         }
         else
         {
@@ -229,9 +238,10 @@ void Board::MakeMoveBonus(int id_from)
         }
         break;
     case '5':
-        if (AntsHill_onBoard[id_from].getlevel() >= 3 && money >= 30)
+        if (AntsHill_onBoard[id_from].getlevel() >= tree_level && money >= effect5.getPrice())
         {
-            money = money - 30;
+            money = money - effect5.getPrice();
+            effect5.applyEffect(AntsHill_onBoard[id_from]);
         }
         else
         {
@@ -249,10 +259,13 @@ void Board::MakeMoveBonus(int id_from)
 
 void Board::MakeMoveSupport(int id_from, int id_to)
 {
+    if (id_from != id_to)
+    {
+        /* code */
+    
     vector<Position> way;
     way = FindWay(id_from, id_to);
-    if (way.empty())
-    {
+  
         /* code */
 
         Ant Ants(AntsHill_onBoard[id_from]); // mravenci dle mraveniště
@@ -292,7 +305,10 @@ void Board::MakeMoveSupport(int id_from, int id_to)
         board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
         system("clear");
         printBoard();
+        AntsHill_onBoard[id_to].support(AntsHill_onBoard[id_from].getNumberOfAnts());
     }
+        
+    
 }
 
 void Board::MakeMoveAttack(int id_from, int id_to)
@@ -335,8 +351,14 @@ void Board::MakeMoveAttack(int id_from, int id_to)
         this_thread::sleep_for(std::chrono::milliseconds(50)); // Zpoždění 50 milisekund
     }
     board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
+    if(AntsHill_onBoard[id_to].Attack(AntsHill_onBoard[id_from])){
+        board_for_print[AntsHill_onBoard[id_to].getPosition().getY()][AntsHill_onBoard[id_to].getPosition().getX()] = make_unique<AntHill>(AntsHill_onBoard[id_to]);
+    }
+
+
     system("clear");
     printBoard();
+
 }
 
 void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro tisk mapy
@@ -361,21 +383,20 @@ void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro
 
 void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
 {                                        // tiskne id mravenist dle ownera
+        cout << "\n";
     for (const AntHill &anthill : AntsHill_onBoard)
     {
         if (anthill.getOwner() == owner)
         {
-            cout << anthill.getId() << " -> " << anthill.getNumberOfAnts() << " || ";
+            cout << anthill.getId() << " lvl: " << anthill.getlevel() << " -> " << anthill.getNumberOfAnts() << " || " << anthill.getMaxNumberOfAnts() << endl;
         }
     }
 }
 
 char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
 {
-    money = money + 10;
     char choice = 0;
     cout << "Vyber moznosti je zavazny" << endl;
-    cout << "penize: " << money << "€" << endl;
     cout << "1: Útok" << endl;
     cout << "2: Podpora" << endl;
     cout << "3: Bonus" << endl;
@@ -394,7 +415,7 @@ int Board::printChoiceAnthillFrom() // z jakeho mraveniste se utoci
     {
         if (anthill.getOwner() == 1)
         {
-            cout << anthill.getId() << " -> " << anthill.getNumberOfAnts() << " || ";
+            cout << anthill.getId() << " -> " << anthill.getNumberOfAnts() << endl;
         }
     }
     cin >> id;
@@ -524,16 +545,6 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
     placeAntHill();
 }
 
-void Board::moveAnt(Ant *ant, const Position &newPosition)
-{
-    // implementace pohybu mravence na desce
-}
-
-void Board::removeAnt(Ant *ant)
-{
-    // implementace odstranění mravence z desky
-}
-
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
 {
     test_counter++;
@@ -547,20 +558,30 @@ bool Board::checkWin() // kontroluje jestli někdo nevyhral
     }
 }
 
-void Board::printAnthills() // tiskne jak na tom jsou mraveniste
-{                           // tisk aktuálních mravenist
+void Board::status() // tiskne jak na tom jsou mraveniste //zaroven vykonava ukony napr pricitani penez pricteni mravencu do mapy,...
+{                    // tisk aktuálních mravenist
+    if (money < 0)
+    {
+        money = 0;
+    }
+    for(auto &anthill : AntsHill_onBoard){
+        anthill.ProduceAnts();
+    }
+
+    money = money + 10;
+    // // projiti mravenist a pricteni dle jejich produkce až do max_hodnoty
+
     cout << "Mraveniště hráče: ";
     printAnthillOwner(1);
     cout << endl;
 
-    cout << "Mraveniště neobsazené: ";
-    printAnthillOwner(0);
-    cout << endl;
+    // // cout << "Mraveniště neobsazené: ";
+    // // printAnthillOwner(0);
+    // // cout << endl;
 
     cout << "Mraveniště počítače: ";
     printAnthillOwner(2);
-    cout << "\n"
-         << endl;
+    cout << "Penize: " << money << "€" << endl;
 }
 
 void Board::printBoard() // tiskne mapu
