@@ -1,8 +1,9 @@
 #include "Ant.hpp"
 
-Ant::Ant(int id, int level, int strength, int defend)
-    : id_Ant(id), level_Ant(level), strenght_Ant(strength), defend_Ant(defend)
+Ant::Ant(AntHill& anthills) : homeAnthills(anthills)
 {
+   number_of_Ants = homeAnthills.getNumberOfAnts();
+   
 }
 
 void Ant::moveTo(const AntHill &target)
@@ -24,14 +25,17 @@ void Ant::specialAbility(AntBehaviorABS &ability)
 {
     ability.ApplyType();
 }
-void Ant::print(){
-    
+void Ant::print()
+{
+    cout << "\x1B[42mO"; // Escape sekvence pro nastavení zeleného pozadí
+    cout << "\x1B[0m";
 }
 
 void Ant::setPassable(bool pruchod)
 {
 }
 
-bool Ant::IsPassable() const{
+bool Ant::IsPassable() const
+{
     return true;
 }

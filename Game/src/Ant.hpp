@@ -8,14 +8,14 @@
 class Ant : public ObjectOnBoard
 {
 private:
-    // Vlastnosti mravence
-    int id_Ant;
-    int level_Ant; // level mravence
-    int strenght_Ant; // sila mravence
-    int defend_Ant; // obrana sila mravence
-    AntHill* home; //mraveniste mravence
+    // Vlastnosti mravenců
+    int number_of_Ants;
+    int level_Ant; // level mravenců
+    int strenght_of_Ant; // sila mravenců
+    int defend_of_Ant; // obrana sila mravenců
+    AntHill& homeAnthills;
 public:
-    Ant(int id, int level, int strenght, int defend);
+    Ant(AntHill& anthills);
     void moveTo(const AntHill &target); //pohyb mravence
     void attack(const AntHill &target); // utok mravence
     void defend(); // obrana

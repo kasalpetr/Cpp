@@ -1,7 +1,6 @@
 #ifndef ANTHILL_H
 #define ANTHILL_H
 
-#include "BonusEffectABS.hpp"
 #include "Position.hpp"
 #include "ObjectOnBoard.hpp"
 
@@ -14,11 +13,15 @@ using namespace std;
 class AntHill : public ObjectOnBoard {
 private:
     // Vlastnosti mraveniště
+    //bonusy
     int level = 1;
-    int max_ants = 50;
-    int number_of_ants = 25;
+    int max_ants = 25;
+    int production = 10;
+    int defend = 10;
+    int attack = 10;
+    //promene
+    int number_of_ants = 10;
     int Owner = 0; // 0 -> nikdy, 1 -> hráč, 2 -> počítač
-    vector<BonusEffectABS*> bonuses;
     int id;
     Position position;
     bool isPassable = false;
@@ -27,11 +30,14 @@ public:
     AntHill(int id, int x, int y);
     void build(); //postaveni pri sestavovani mapy
     void upgrade(); //vylepseni lvl mraveniste
-    void activateBonus(BonusEffectABS* Bonus);//pridani bonusu do vektoru
     Position getPosition() const;
     int getId() const;
     int getOwner() const;
     int getNumberOfAnts() const;
+    int getMaxNumberOfAnts() const;
+    int getlevel()const;
+    int getDefend()const;
+    int getAttack()const;
 
     //print metody
     void print() override;

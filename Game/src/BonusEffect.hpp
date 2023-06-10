@@ -3,7 +3,7 @@
 
 #include "BonusEffectABS.hpp"
 
-class BonusCheaper : public BonusEffectABS {
+class BonusLevel : public BonusEffectABS {
 private:
     // Vlastnosti konkrétního bonusového efektu mraveniště"levnější mravenci"
 

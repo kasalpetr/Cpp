@@ -11,7 +11,8 @@
 #include <climits>
 #include <queue>
 #include <algorithm>
-#include <map>
+#include <thread>
+#include <chrono>
 
 #include "AntHill.hpp"
 #include "Ant.hpp"
@@ -32,6 +33,8 @@ private:
     int x_board;
     int y_board;
     int test_counter = 0;
+
+    int money = 0;
 
     void placeAntHill();       // položi mraveniste kde ma byt
     void placeObstacles(int x, int y); // polozi prekazky tam kde ma 

@@ -59,8 +59,7 @@ void Board::MakeMove(int id_from, int id_to, int choice) // choice 0 -> attack, 
     {
         MakeMoveBonus(id_from);
     }
-
-    cout << "vykonán tah" << endl;
+    system("clear");
 }
 
 vector<Position> Board::FindWay(int id_from, int id_to)
@@ -92,7 +91,8 @@ vector<Position> Board::FindWay(int id_from, int id_to)
         Position current = q.front();
         q.pop();
 
-        if (current == end){
+        if (current == end)
+        {
             // cout << "konec" << endl;
             break;
         }
@@ -107,7 +107,7 @@ vector<Position> Board::FindWay(int id_from, int id_to)
                 Position neighbor(newCol, newRow);
                 q.push(neighbor);
                 visited[newRow][newCol] = true;
-               distance[newRow][newCol] = distance[current.getY()][current.getX()] + 1; 
+                distance[newRow][newCol] = distance[current.getY()][current.getX()] + 1;
                 predecessors[newRow][newCol] = current;
             }
             // cout << newRow <<  "||" << newCol << endl;
@@ -128,7 +128,7 @@ vector<Position> Board::FindWay(int id_from, int id_to)
         reverse(path.begin(), path.end());
     }
 
-     board_for_print[start.getY()][start.getX()]->setPassable(false);
+    board_for_print[start.getY()][start.getX()]->setPassable(false);
     board_for_print[end.getY()][end.getX()]->setPassable(false);
     return path;
 }
@@ -142,21 +142,163 @@ bool Board::isValidPosition(int row, int col)
 
 void Board::MakeMoveBonus(int id_from)
 {
+    // Výběr bonusu
+    if (AntsHill_onBoard[id_from].getlevel() >= 3)
+    {
+        cout << "Vyber bonus mas: " << money << "€" << endl;
+        cout << "1. Více mravenců (max. hodnota)"
+             << "- 10€" << endl;
+        cout << "2. Silnější mravenci"
+             << "- 20€" << endl;
+        cout << "3. Silnější obrana mravenců"
+             << "- 20€" << endl;
+        cout << "4. Vyšší level mraveniště"
+             << "- 20€" << endl;
+        cout << "5. Rychlejší produkce"
+             << "- 30€" << endl;
+    }
+    else
+    {
+        cout << "Vyber bonus mas: " << money << "€" << endl;
+        cout << "1. Více mravenců (max. hodnota)"
+             << "- 10€" << endl;
+        cout << "2. Silnější mravenci"
+             << "- 20€" << endl;
+        cout << "3. Silnější obrana mravenců"
+             << "- 20€" << endl;
+        cout << "4. Vyšší level mraveniště"
+             << "- 20€" << endl;
+    }
+
+    char choice;
+    cin >> choice;
+
+    // Zpracování výběru bonusu
+    switch (choice)
+    {
+    case '1':
+        if (money >= 10)
+        {
+        }
+        
+        break;
+    case '2':
+
+        break;
+    case '3':
+
+        break;
+    case '4':
+
+        break;
+    case '5':
+        if (AntsHill_onBoard[id_from].getlevel() >= 3)
+        {
+        }
+        else
+        {
+            system("clear");
+            cout << "Neplatná volba." << endl;
+            MakeMoveBonus(id_from);
+        }
+        break;
+    default:
+        system("clear");
+        cout << "Neplatná volba." << endl;
+        MakeMoveBonus(id_from);
+    }
 }
 
 void Board::MakeMoveSupport(int id_from, int id_to)
 {
-    vector<Position> way = FindWay(id_from, id_to);
+    vector<Position> way;
+    way = FindWay(id_from, id_to);
+    if (way.empty())
+    {
+        /* code */
+
+        Ant Ants(AntsHill_onBoard[id_from]); // mravenci dle mraveniště
+
+        // Odebrání prvního prvku // start
+        if (!way.empty())
+        {
+            way.erase(way.begin());
+        }
+        // Odebrání posledního prvku //konec
+        if (!way.empty())
+        {
+            way.pop_back();
+        }
+        for (auto it = way.begin(); it != way.end(); ++it)
+        {
+            system("clear");
+            const auto &test = *it;
+
+            if (it == way.begin())
+            {
+                board_for_print[test.getY()][test.getX()] = make_unique<Ant>(Ants);
+            }
+            else if (it == way.end())
+            {
+                board_for_print[test.getY()][test.getX()] = make_unique<EmptySpace>();
+            }
+            else
+            {
+                const auto &previous = *std::prev(it);
+                board_for_print[previous.getY()][previous.getX()] = make_unique<EmptySpace>();
+                board_for_print[test.getY()][test.getX()] = make_unique<Ant>(Ants);
+            }
+            printBoard();
+            this_thread::sleep_for(std::chrono::milliseconds(50)); // Zpoždění 50 milisekund
+        }
+        board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
+        system("clear");
+        printBoard();
+    }
 }
 
 void Board::MakeMoveAttack(int id_from, int id_to)
 {
     vector<Position> way;
     way = FindWay(id_from, id_to);
-    for (auto test : way)
+
+    Ant Ants(AntsHill_onBoard[id_from]); // mravenci dle mraveniště
+
+    // Odebrání prvního prvku // start
+    if (!way.empty())
     {
-        cout << test.getX() << "," << test.getY() << endl;
+        way.erase(way.begin());
     }
+    // Odebrání posledního prvku //konec
+    if (!way.empty())
+    {
+        way.pop_back();
+    }
+    for (auto it = way.begin(); it != way.end(); ++it)
+    {
+        system("clear");
+        const auto &test = *it;
+
+        if (it == way.begin())
+        {
+            board_for_print[test.getY()][test.getX()] = make_unique<Ant>(Ants);
+        }
+        else if (it == way.end())
+        {
+            board_for_print[test.getY()][test.getX()] = make_unique<EmptySpace>();
+        }
+        else
+        {
+            const auto &previous = *std::prev(it);
+            board_for_print[previous.getY()][previous.getX()] = make_unique<EmptySpace>();
+            board_for_print[test.getY()][test.getX()] = make_unique<Ant>(Ants);
+        }
+        printBoard();
+        this_thread::sleep_for(std::chrono::milliseconds(50)); // Zpoždění 50 milisekund
+    }
+    board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
+    system("clear");
+    printBoard();
 }
 
 void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro tisk mapy
@@ -192,7 +334,10 @@ void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
 
 char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
 {
+    money = money + 10;
     char choice = 0;
+    cout << "Vyber moznosti je zavazny" << endl;
+    cout << "penize: " << money << "€" << endl;
     cout << "1: Útok" << endl;
     cout << "2: Podpora" << endl;
     cout << "3: Bonus" << endl;

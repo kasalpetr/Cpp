@@ -27,8 +27,6 @@ void AntHill::upgrade()
     // Implementace vylepšení levelu mraveniště
 }
 
-void AntHill::activateBonus(BonusEffectABS *bonus) {}
-
 Position AntHill::getPosition() const
 {
     return position;
@@ -47,6 +45,26 @@ int AntHill::getOwner() const
 int AntHill::getNumberOfAnts() const
 {
     return number_of_ants;
+}
+
+int AntHill::getMaxNumberOfAnts() const
+{
+    return max_ants;
+}
+
+int AntHill::getAttack() const
+{
+    return attack;
+}
+
+int AntHill::getDefend() const
+{
+    return defend;
+}
+
+int AntHill::getlevel() const
+{
+    return level;
 }
 
 void AntHill::print()
@@ -68,11 +86,13 @@ void AntHill::print()
     }
 }
 
-bool AntHill::IsPassable() const{
+bool AntHill::IsPassable() const
+{
     return isPassable;
 }
 
-void AntHill::setPassable(bool pruchod){
+void AntHill::setPassable(bool pruchod)
+{
     isPassable = pruchod;
 }
 
@@ -87,8 +107,8 @@ int AntHill::printAttackTo(const vector<AntHill> &AntsHill_onBoard)
         }
     }
     cin >> id;
-        if (std::cin.eof())
-            return 0;
+    if (std::cin.eof())
+        return 0;
     if (cin.fail())
     {
         cin.clear();                                         // Vynulovat příznaky chyby u cin
@@ -121,25 +141,25 @@ int AntHill::printSupportTo(const vector<AntHill> &AntsHill_onBoard)
             cout << anthill.getId() << "-> " << anthill.getNumberOfAnts() << endl;
         }
     }
-        cin >> id;
-        if (cin.fail())
+    cin >> id;
+    if (cin.fail())
+    {
+        cin.clear();                                         // Vynulovat příznaky chyby u cin
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignorovat zbylé znaky ve vstupním proudu až do konce řádku
+    }
+    else
+    {
+        for (const AntHill &anthill : AntsHill_onBoard)
         {
-            cin.clear();                                         // Vynulovat příznaky chyby u cin
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignorovat zbylé znaky ve vstupním proudu až do konce řádku
-        }
-        else
-        {
-            for (const AntHill &anthill : AntsHill_onBoard)
+            if (anthill.getOwner() == 1)
             {
-                if (anthill.getOwner() == 1)
+                if (id == anthill.getId())
                 {
-                    if (id == anthill.getId())
-                    {
-                        return id;
-                    }
+                    return id;
                 }
             }
         }
-        cout << "Zadej správnou hodnotu" << endl;
-        return printSupportTo(AntsHill_onBoard);
+    }
+    cout << "Zadej správnou hodnotu" << endl;
+    return printSupportTo(AntsHill_onBoard);
 }

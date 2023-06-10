@@ -1,8 +1,8 @@
 #include "BonusEffect.hpp"
 
-void BonusCheaper::applyEffect()
+void BonusLevel::applyEffect()
 {
-    // Implementace efektu "levnější mravenci"
+    // Implementace větší level
 }
 
 void BonusMoreAnts::applyEffect()
@@ -22,5 +22,5 @@ void BonusStrongerAnts::applyEffect()
 
 void BonusDefendAnts::applyEffect()
 {
-    // Implementace efektu "obraný mravenci"
+    // Implementace efektu "silnější obrana mravencu"
 }
