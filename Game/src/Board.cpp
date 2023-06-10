@@ -179,21 +179,59 @@ void Board::MakeMoveBonus(int id_from)
     case '1':
         if (money >= 10)
         {
+            money = money - 10;
         }
-        
+        else
+        {
+            system("clear");
+            cout << "Neplatná volba." << endl;
+            MakeMoveBonus(id_from);
+        }
+
         break;
     case '2':
+        if (money >= 20)
+        {
+            money = money - 20;
+        }
+        else
+        {
+            system("clear");
+            cout << "Neplatná volba." << endl;
+            MakeMoveBonus(id_from);
+        }
 
         break;
     case '3':
-
+        if (money >= 20)
+        {
+            money = money - 20;
+        }
+        else
+        {
+            system("clear");
+            cout << "Neplatná volba." << endl;
+            MakeMoveBonus(id_from);
+        }
         break;
     case '4':
-
+        if (money >= 20)
+        {
+            BonusLevel effect;
+            money = money - 20;
+            effect.applyEffect(AntsHill_onBoard[id_from]);
+        }
+        else
+        {
+            system("clear");
+            cout << "Neplatná volba." << endl;
+            MakeMoveBonus(id_from);
+        }
         break;
     case '5':
-        if (AntsHill_onBoard[id_from].getlevel() >= 3)
+        if (AntsHill_onBoard[id_from].getlevel() >= 3 && money >= 30)
         {
+            money = money - 30;
         }
         else
         {

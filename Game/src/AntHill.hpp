@@ -39,6 +39,11 @@ public:
     int getDefend()const;
     int getAttack()const;
 
+    void setLevel();
+    void setproduction();
+    void setMaxAnts();
+    void setdefend();
+    void setattack();
     //print metody
     void print() override;
     bool IsPassable()const override;

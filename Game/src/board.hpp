@@ -19,6 +19,7 @@
 #include "Position.hpp"
 #include "Obstacles.hpp"
 #include "Bot.hpp"
+#include "BonusEffect.hpp"
 
 using namespace std;
 

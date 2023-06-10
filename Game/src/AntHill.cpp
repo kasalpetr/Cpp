@@ -67,6 +67,27 @@ int AntHill::getlevel() const
     return level;
 }
 
+void AntHill::setLevel(){
+    level++;
+}     
+
+void AntHill::setMaxAnts(){
+    max_ants = max_ants + 25;
+}
+
+void AntHill::setdefend(){
+defend = defend + 10;
+}
+
+void AntHill::setattack(){
+attack = attack + 10;
+}
+
+void AntHill::setproduction(){
+production = production + 10;
+}
+
+
 void AntHill::print()
 {
     switch (Owner)
