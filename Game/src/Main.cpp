@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include <limits>
+#include <csignal>
 
 int main(int argc, char const *argv[])
 {
@@ -7,11 +8,9 @@ int main(int argc, char const *argv[])
     Game game;
     int option;
 
-    
-    while (true) //pusteni hry 3 moznosti -> Nová hra, načíst hru, Ukončit hru 
+    while (true) // pusteni hry 3 moznosti -> Nová hra, načíst hru, Ukončit hru
     {
         /* code */
-
 
         std::cout << "Vyberte moznost:\n";
         std::cout << "1. Spustit hru\n";
@@ -21,6 +20,11 @@ int main(int argc, char const *argv[])
         // Čtení vstupu od uživatele
         if (!(std::cin >> option))
         {
+            if (std::cin.eof())
+            {
+                exit(1);
+            }
+
             system("clear");
             std::cout << "Neplatny vstup. Zadejte platnou volbu.\n";
             std::cin.clear();

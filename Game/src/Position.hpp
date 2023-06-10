@@ -10,6 +10,9 @@ private:
 public:
     Position();
     Position(int x, int y);
+    bool operator==(const Position& other) const;
+    bool operator!=(const Position& other) const;
+    bool operator<(const Position& other) const;
     int getX() const;
     int getY() const;
     void setX(int x);

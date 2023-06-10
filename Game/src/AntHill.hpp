@@ -21,6 +21,7 @@ private:
     vector<BonusEffectABS*> bonuses;
     int id;
     Position position;
+    bool isPassable = false;
 public:
     AntHill();
     AntHill(int id, int x, int y);
@@ -34,6 +35,9 @@ public:
 
     //print metody
     void print() override;
+    bool IsPassable()const override;
+    void setPassable(bool pruchod) override;
+
     int printAttackTo(const vector<AntHill> &AntsHill_onBoard);
     int printSupportTo(const vector<AntHill> &AntsHill_onBoard);
 

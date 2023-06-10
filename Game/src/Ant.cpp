@@ -27,3 +27,11 @@ void Ant::specialAbility(AntBehaviorABS &ability)
 void Ant::print(){
     
 }
+
+void Ant::setPassable(bool pruchod)
+{
+}
+
+bool Ant::IsPassable() const{
+    return true;
+}

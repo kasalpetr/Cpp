@@ -17,12 +17,19 @@ public:
     Obstacles();
     Position getPositon() const;
     void print() override;
+    bool IsPassable() const override;
+    void setPassable(bool pruchod) override;
+
+
 };
 
 class EmptySpace : public ObjectOnBoard {
 public:
     EmptySpace();
     void print() override;
+    bool IsPassable() const override;
+    void setPassable(bool pruchod) override;
+
 };
 
 #endif  // OBSTACLES_H

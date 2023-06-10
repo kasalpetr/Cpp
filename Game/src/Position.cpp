@@ -10,6 +10,25 @@ Position::Position(int x, int y)
     this->y = y;
 }
 
+bool Position::operator==(const Position &other) const
+{
+    return (x == other.x) && (y == other.y);
+}
+
+bool Position::operator!=(const Position &other) const
+{
+    return !(*this == other);
+}
+
+bool Position::operator<(const Position &other) const
+{
+    if (x != other.x)
+    {
+        return x < other.x;
+    }
+    return y < other.y;
+}
+
 int Position::getX() const
 {
     return x;

@@ -10,7 +10,6 @@
 #include <algorithm>
 
 #include "Board.hpp"
-#include "Bot.hpp"
 
 using namespace std;
 
@@ -22,7 +21,7 @@ private:
     string map; // číslo mapy 
 public:
     Game();
-    void start(); //pusti hru -> vyběr mapy -> vyběr obtížnosti
+    bool start(); //pusti hru -> vyběr mapy -> vyběr obtížnosti
     void player(); //tah hrace
     void bot(); //tah hrace
 

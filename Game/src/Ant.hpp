@@ -21,6 +21,10 @@ public:
     void defend(); // obrana
     void specialAbility(AntBehaviorABS &ability); // specialni schopnosti(utocnik, obrance, rychlejsi mravenec)
     void print() override;
+    bool IsPassable()const override;
+    void setPassable(bool pruchod) override;
+
+
 };
 
 #endif // ANT_H

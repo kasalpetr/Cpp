@@ -44,8 +44,119 @@ bool Board::checkAroundPlace(int x, int y, int new_x, int new_y) // kontroluje 3
     return true;
 }
 
-void Board::MakeMove()
+void Board::MakeMove(int id_from, int id_to, int choice) // choice 0 -> attack, 1 -> support, 2 -> bonus for id_from
 {
+    system("clear");
+    if (choice == 0)
+    {
+        MakeMoveAttack(id_from, id_to);
+    }
+    else if (choice == 1)
+    {
+        MakeMoveSupport(id_from, id_to);
+    }
+    else if (choice == 2)
+    {
+        MakeMoveBonus(id_from);
+    }
+
+    cout << "vykonán tah" << endl;
+}
+
+vector<Position> Board::FindWay(int id_from, int id_to)
+{
+    Position start = AntsHill_onBoard[id_from].getPosition();
+    Position end = AntsHill_onBoard[id_to].getPosition();
+
+    board_for_print[start.getY()][start.getX()]->setPassable(true);
+    board_for_print[end.getY()][end.getX()]->setPassable(true);
+
+    int numRows = board_for_print.size();
+    int numCols = board_for_print[0].size();
+
+    vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));
+    vector<vector<int>> distance(numRows, vector<int>(numCols, INT_MAX));
+    vector<vector<Position>> predecessors(numRows, vector<Position>(numCols));
+
+    queue<Position> q;
+
+    vector<int> dr = {-1, 1, 0, 0};
+    vector<int> dc = {0, 0, -1, 1};
+
+    q.push(start);
+    visited[start.getY()][start.getX()] = true;
+    distance[start.getY()][start.getX()] = 0;
+
+    while (!q.empty())
+    {
+        Position current = q.front();
+        q.pop();
+
+        if (current == end){
+            // cout << "konec" << endl;
+            break;
+        }
+        // cout << current.getX() << "||" << end.getX() <<"--" << current.getY() << "||" << end.getY() << endl;
+        for (int i = 0; i < 4; i++)
+        {
+            int newRow = current.getY() + dr[i];
+            int newCol = current.getX() + dc[i];
+
+            if (isValidPosition(newRow, newCol) && !visited[newRow][newCol])
+            {
+                Position neighbor(newCol, newRow);
+                q.push(neighbor);
+                visited[newRow][newCol] = true;
+               distance[newRow][newCol] = distance[current.getY()][current.getX()] + 1; 
+                predecessors[newRow][newCol] = current;
+            }
+            // cout << newRow <<  "||" << newCol << endl;
+        }
+    }
+
+    vector<Position> path;
+
+    if (distance[end.getY()][end.getX()] != INT_MAX)
+    {
+        Position current = end;
+        while (current != start)
+        {
+            path.push_back(current);
+            current = predecessors[current.getY()][current.getX()];
+        }
+        path.push_back(start);
+        reverse(path.begin(), path.end());
+    }
+
+     board_for_print[start.getY()][start.getX()]->setPassable(false);
+    board_for_print[end.getY()][end.getX()]->setPassable(false);
+    return path;
+}
+
+bool Board::isValidPosition(int row, int col)
+{
+    int numRows = board_for_print.size();
+    int numCols = board_for_print[0].size();
+    return (row >= 0 && row < numRows && col >= 0 && col < numCols && board_for_print[row][col]->IsPassable());
+}
+
+void Board::MakeMoveBonus(int id_from)
+{
+}
+
+void Board::MakeMoveSupport(int id_from, int id_to)
+{
+    vector<Position> way = FindWay(id_from, id_to);
+}
+
+void Board::MakeMoveAttack(int id_from, int id_to)
+{
+    vector<Position> way;
+    way = FindWay(id_from, id_to);
+    for (auto test : way)
+    {
+        cout << test.getX() << "," << test.getY() << endl;
+    }
 }
 
 void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro tisk mapy
@@ -93,7 +204,7 @@ char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
     return choice;
 }
 
-int Board::printChoiceAnthillFrom()
+int Board::printChoiceAnthillFrom() // z jakeho mraveniste se utoci
 {
     int id;
     for (const AntHill &anthill : AntsHill_onBoard)
@@ -104,6 +215,10 @@ int Board::printChoiceAnthillFrom()
         }
     }
     cin >> id;
+    if (std::cin.eof())
+    {
+        return 0;
+    }
     if (cin.fail())
     {
         cin.clear();                                         // Vynulovat příznaky chyby u cin
@@ -188,7 +303,6 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
             }
             else if (line.find("obstacles:") != string::npos && line.substr(0, 10) == "obstacles:")
             {
-                cout << "random" << endl;
                 while (getline(file, line) && !line.empty())
                 {
 
@@ -239,7 +353,15 @@ void Board::removeAnt(Ant *ant)
 
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
 {
-    return true;
+    test_counter++;
+    if (test_counter == 5)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void Board::printAnthills() // tiskne jak na tom jsou mraveniste
@@ -270,36 +392,55 @@ void Board::printBoard() // tiskne mapu
     }
 }
 
-void Board::printMove() // zpracovava tisk a vyber ukonu
+bool Board::printMove() // zpracovava tisk a vyber ukonu
 {                       // tiskne možné tahy
     char choice = printChoiceOfMove();
     int id_from = -1;
     int id_to = -1;
     switch (choice)
     {
-    case '1':  // Kód pro provedení akce Attack
+    case '1': // Kód pro provedení akce Attack
         cout << "Útok z mraveniště" << endl;
-        id_from = printChoiceAnthillFrom(); //otazka odkud se zautoc
+        id_from = printChoiceAnthillFrom(); // otazka odkud se zautoci
+        if (std::cin.eof())
+            return false;
         system("clear");
         printBoard();
         cout << "Kam chceš zaútočit" << endl;
-        id_to = AntsHill_onBoard[id_from].printAttackTo(AntsHill_onBoard); //kam se podpori
+        id_to = AntsHill_onBoard[id_from].printAttackTo(AntsHill_onBoard); // kam se zautoci
+        if (std::cin.eof())
+            return false;
+        MakeMove(id_from, id_to, 0);
         break;
     case '2': // Kód pro provedení akce Support
         cout << "Podpora z mraveniště" << endl;
-        id_from = printChoiceAnthillFrom(); //otazka odkud se podpori
-        AntsHill_onBoard[id_from].printSupportTo(AntsHill_onBoard); //kam se podpori
+        id_from = printChoiceAnthillFrom(); // otazka odkud se podpori
+        system("clear");
+        printBoard();
+        cout << "Kam chceš Podporit" << endl;
+        id_to = AntsHill_onBoard[id_from].printSupportTo(AntsHill_onBoard); // kam se podpori
+        MakeMove(id_from, id_to, 1);
         break;
-    case '3':// Kód pro provedení akce Bonus
+    case '3': // Kód pro provedení akce Bonus
         cout << "Kam chces umistit bonus" << endl;
         id_from = printChoiceAnthillFrom();
+        MakeMove(id_from, -1, 2);
         break;
     case '4': // Kód pro provedení akce Nic
+        system("clear");
+
         break;
     case '5': // Kód pro provedení akce Uložit
+        system("clear");
         break;
     default:
+        if (std::cin.eof())
+        {
+            return false;
+        }
         cout << "Neplatná volba -> zvol něco jiného" << endl;
+
         printMove();
     }
+    return true;
 }
