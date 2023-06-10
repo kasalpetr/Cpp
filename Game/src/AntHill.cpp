@@ -138,13 +138,30 @@ bool AntHill::Attack(AntHill &Attack_from)
 
     if (defense - attack < 0)
     {
+        this->number_of_ants = abs(((defense - attack) / Attack_from.getlevel()) / Attack_from.getAttack());
+        Attack_from.number_of_ants = 0;
         changeOwner(1);
+        return true;
     }
+    if (defense - attack > 0)
+    {
+        this->number_of_ants = abs(((defense - attack) / level) / defend);
+        Attack_from.number_of_ants = 0;
+        return false;
+    }
+    if (defense - attack == 0)
+    {
+        this->number_of_ants = 0;
+        Attack_from.number_of_ants = 0;
+        return false;
+    }
+    return false;
 }
 
-void AntHill::support(int number_of_suporters)
+void AntHill::support(AntHill &Attack_from)
 {
-    number_of_ants = number_of_ants + number_of_suporters;
+    number_of_ants = number_of_ants + Attack_from.getNumberOfAnts();
+    Attack_from.number_of_ants = 0;
 }
 
 int AntHill::printAttackTo(const vector<AntHill> &AntsHill_onBoard)

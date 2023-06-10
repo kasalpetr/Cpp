@@ -143,14 +143,21 @@ bool Board::isValidPosition(int row, int col)
 void Board::MakeMoveBonus(int id_from)
 {
     BonusMoreAnts effect1;
+    effect1.setPrice(bonuses[0]);
     BonusStrongerAnts effect2;
+    effect2.setPrice(bonuses[1]);
     BonusDefendAnts effect3;
+    effect3.setPrice(bonuses[2]);
     BonusLevel effect4;
+    effect4.setPrice(bonuses[3]);
     BonusFasterProduction effect5;
+    effect5.setPrice(bonuses[4]);
+
     // Výběr bonusu
     if (AntsHill_onBoard[id_from].getlevel() >= tree_level)
     {
         cout << "Vyber bonus mas: " << money << "€" << endl;
+        cout << "0. Jsem chudej a měl jsem vybrat jiny tah" << endl;
         cout << "1. Více mravenců (max. hodnota)"
              << "- " << effect1.getPrice() << "€" << endl;
         cout << "2. Silnější mravenci"
@@ -165,6 +172,7 @@ void Board::MakeMoveBonus(int id_from)
     else
     {
         cout << "Vyber bonus mas: " << money << "€" << endl;
+        cout << "0. Jsem Chudej a měl jsem vybrat jiny tah" << endl;
         cout << "1. Více mravenců (max. hodnota)"
              << "- " << effect1.getPrice() << "€" << endl;
         cout << "2. Silnější mravenci"
@@ -182,6 +190,8 @@ void Board::MakeMoveBonus(int id_from)
     switch (choice)
     {
 
+    case '0':
+        break;
     case '1':
 
         if (money >= effect1.getPrice())
@@ -262,10 +272,10 @@ void Board::MakeMoveSupport(int id_from, int id_to)
     if (id_from != id_to)
     {
         /* code */
-    
-    vector<Position> way;
-    way = FindWay(id_from, id_to);
-  
+
+        vector<Position> way;
+        way = FindWay(id_from, id_to);
+
         /* code */
 
         Ant Ants(AntsHill_onBoard[id_from]); // mravenci dle mraveniště
@@ -305,10 +315,8 @@ void Board::MakeMoveSupport(int id_from, int id_to)
         board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
         system("clear");
         printBoard();
-        AntsHill_onBoard[id_to].support(AntsHill_onBoard[id_from].getNumberOfAnts());
+        AntsHill_onBoard[id_to].support(AntsHill_onBoard[id_from]);
     }
-        
-    
 }
 
 void Board::MakeMoveAttack(int id_from, int id_to)
@@ -351,14 +359,13 @@ void Board::MakeMoveAttack(int id_from, int id_to)
         this_thread::sleep_for(std::chrono::milliseconds(50)); // Zpoždění 50 milisekund
     }
     board_for_print[way.back().getY()][way.back().getX()] = make_unique<EmptySpace>();
-    if(AntsHill_onBoard[id_to].Attack(AntsHill_onBoard[id_from])){
+    if (AntsHill_onBoard[id_to].Attack(AntsHill_onBoard[id_from]))
+    {
         board_for_print[AntsHill_onBoard[id_to].getPosition().getY()][AntsHill_onBoard[id_to].getPosition().getX()] = make_unique<AntHill>(AntsHill_onBoard[id_to]);
     }
 
-
     system("clear");
     printBoard();
-
 }
 
 void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro tisk mapy
@@ -383,7 +390,7 @@ void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro
 
 void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
 {                                        // tiskne id mravenist dle ownera
-        cout << "\n";
+    cout << "\n";
     for (const AntHill &anthill : AntsHill_onBoard)
     {
         if (anthill.getOwner() == owner)
@@ -402,6 +409,7 @@ char Board::printChoiceOfMove() // tiskne možnosti co udelat utok -> obrana
     cout << "3: Bonus" << endl;
     cout << "4: Nic" << endl;
     cout << "5: Uložit" << endl;
+    cout << "6: UKončit" << endl;
     cin >> choice;
     system("clear");
     printBoard();
@@ -464,7 +472,17 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
         getline(file, line);
         line.find("y: "); // najde hodnotu y
         Board::y_board = stoi(line.substr(3));
+        getline(file, line);
+        line.find("t: "); // najde hodnotu y
+        Board::tree_level = stoi(line.substr(3));
         BoardForPrintMake(x_board, y_board);
+
+        for (int i = 0; i < 5; i++)
+        {
+            getline(file, line);
+            line.find("b: "); // najde hodnotu y
+            Board::bonuses.push_back(stoi(line.substr(3)));
+        }
 
         while (getline(file, line)) // prochazi vsechny radky
         {
@@ -547,15 +565,16 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
 
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
 {
-    test_counter++;
-    if (test_counter == 5)
+
+    int winner = AntsHill_onBoard.back().getOwner();
+    for (auto &anthill : AntsHill_onBoard)
     {
-        return true;
+        if (winner != anthill.getOwner())
+        {
+            return false;
+        }
     }
-    else
-    {
-        return false;
-    }
+    return true;
 }
 
 void Board::status() // tiskne jak na tom jsou mraveniste //zaroven vykonava ukony napr pricitani penez pricteni mravencu do mapy,...
@@ -564,7 +583,8 @@ void Board::status() // tiskne jak na tom jsou mraveniste //zaroven vykonava uko
     {
         money = 0;
     }
-    for(auto &anthill : AntsHill_onBoard){
+    for (auto &anthill : AntsHill_onBoard)
+    {
         anthill.ProduceAnts();
     }
 
@@ -581,7 +601,8 @@ void Board::status() // tiskne jak na tom jsou mraveniste //zaroven vykonava uko
 
     cout << "Mraveniště počítače: ";
     printAnthillOwner(2);
-    cout << "Penize: " << money << "€" << endl;
+    cout << "\nPenize: " << money << "€\n"
+         << endl;
 }
 
 void Board::printBoard() // tiskne mapu
@@ -636,6 +657,10 @@ bool Board::printMove() // zpracovava tisk a vyber ukonu
         break;
     case '5': // Kód pro provedení akce Uložit
         system("clear");
+        break;
+    case '6': // Kód pro provedení akce Uložit
+        system("clear");
+        return false;
         break;
     default:
         if (std::cin.eof())

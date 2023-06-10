@@ -51,7 +51,7 @@ public:
     void setdefend();
     void setattack();
     void setPassable(bool pruchod) override;
-    void support(int number_of_suporters);
+    void support(AntHill &Attack_from);
     bool Attack(AntHill &Attack_from);
     // print metody
     void print() override;

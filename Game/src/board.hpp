@@ -31,12 +31,12 @@ private:
     vector<AntHill> AntsHill_onBoard;                          // mraveniste na desce
     vector<Obstacles> Obstacles_onBoard;                       // prekazky na desce
     vector<vector<unique_ptr<ObjectOnBoard>>> board_for_print; // mapa 2d pole
-    // vector<int> bonuses;                                       // Vektor pro ukládání hodnot bonusů
+    vector<int> bonuses;                                       // Vektor pro ukládání hodnot bonusů
     int x_board;
     int y_board;
     int test_counter = 0;
 
-    int tree_level=0;
+    int tree_level = 3;
     int money = 0;
 
     void placeAntHill();                                                                                    // položi mraveniste kde ma byt
@@ -60,7 +60,7 @@ public:
     Board();
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);
     void loadMap(string name_of_map); // nahraje mapu
-
+    
     bool checkWin();
 
     // print metody
