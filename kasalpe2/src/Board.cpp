@@ -404,6 +404,8 @@ void Board::AnalyseGameBot()
     effect1.setPrice(bonuses[0]);
     BonusStrongerAnts effect2;
     effect2.setPrice(bonuses[1]);
+    BonusFasterProduction effect3;
+    effect3.setPrice(bonuses[4]);
     pocitac.max_utok = 0;
     pocitac.money = pocitac.money + 10;
     pocitac.pauza_kolo = pocitac.pauza_kolo + 1;
@@ -413,7 +415,14 @@ void Board::AnalyseGameBot()
         {
             for (auto &anthill : AntsHill_onBoard) // prvnímu mravenisti -> tomu hlavnímu se koupí bonus na vetší počet mravencu
             {
-                if (anthill.getOwner() == 2 && pocitac.money >= effect1.getPrice())
+                if (pocitac.pauza_kolo == 2 && anthill.getOwner() == 2 && pocitac.money >= effect1.getPrice())
+                {
+                    pocitac.money = pocitac.money - effect1.getPrice();
+                    effect3.applyEffect(anthill);
+                    pocitac.nakup = true;
+                    break;
+                }
+                else if (anthill.getOwner() == 2 && pocitac.money >= effect1.getPrice())
                 {
                     pocitac.money = pocitac.money - effect1.getPrice();
                     effect1.applyEffect(anthill);
