@@ -8,7 +8,7 @@
 #include <vector>
 
 using namespace std;
-//prekazky na mape
+/// prekazky na  2d mape
 class Obstacles : public ObjectOnBoard{
 private:
 Position position;
@@ -22,7 +22,7 @@ public:
 
 
 };
-
+/// @brief reprezentace prázdného místa na 2d mape
 class EmptySpace : public ObjectOnBoard {
 public:
     EmptySpace();

@@ -9,11 +9,11 @@
 #include <iostream>
 #include <limits>
 using namespace std;
-
+/// @brief reprezentace mraveniste
 class AntHill : public ObjectOnBoard
 {
 private:
-    // Vlastnosti mraveniště
+    /// Vlastnosti mraveniště
     // bonusy
     int level = 1;
     int max_ants = 25;
@@ -32,10 +32,11 @@ private:
     void changeOwner(int owner);
 
 public:
-    AntHill();
-    AntHill(int id, int x, int y);
-    void build(); // postaveni pri sestavovani mapy
-    void ProduceAnts();
+    AntHill(); ///konstruktor
+    AntHill(int id, int x, int y); ///konstruktor 
+    /// vytvori tolik mravencu podle produkce
+    void ProduceAnts(); 
+    /// gettery 
     Position getPosition() const;
     int getId() const;
     int getOwner() const;
@@ -44,22 +45,31 @@ public:
     int getlevel() const;
     int getDefend() const;
     int getAttack() const;
-
+    
+    /// nastavovaní bonusu
     void setLevel();
     void setproduction();
     void setMaxAnts();
     void setdefend();
     void setattack();
 
-    void loadnewAntHills(int id, int level, int number_of_ants, int max_of_ants, int owner, int attack, int defend);
+    /// nacte nove hodnoty mraveniste -> použivano pri nahrávání hry
+    void loadnewAntHills(int id, int level, int number_of_ants, int max_of_ants, int owner, int attack, int defend); 
+    
     void setPassable(bool pruchod) override;
+    /// @brief vypocet pro pocet mravencu pri podporeni mraveniste
+    /// @param Attack_from mraveniste odkud se podporovalo
     void support(AntHill &Attack_from);
+    /// @brief vypocet utoku pri utoku na mraveniste
+    /// @param Attack_from mraveniste odkud bylo utoceno
+    /// @return vraci true pokud bylo mraveniste obsazeno 
     bool Attack(AntHill &Attack_from);
     // print metody
     void print() override;
     bool IsPassable() const override;
-
+    ///tiskne mraveniste kam se muze utocit
     int printAttackTo(const vector<AntHill> &AntsHill_onBoard);
+    /// tiskne mraveniste kam se muze podporovat
     int printSupportTo(const vector<AntHill> &AntsHill_onBoard);
 };
 

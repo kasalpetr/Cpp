@@ -1,4 +1,4 @@
-#include "Obstacles.hpp"
+#include "obstacles.hpp"
 
 Obstacles::Obstacles()
 {

@@ -3,9 +3,6 @@
 
 Board::Board() {}
 
-Board::Board(vector<AntHill> antHills, vector<Obstacles> obstacles)
-    : AntsHill_onBoard(antHills), Obstacles_onBoard(obstacles) {}
-
 void Board::placeAntHill() // polozi anthill na mapu
 {
     // implementace umístění mraveništ na desku
@@ -144,7 +141,7 @@ bool Board::isValidPosition(int row, int col)
     return (row >= 0 && row < numRows && col >= 0 && col < numCols && board_for_print[row][col]->IsPassable());
 }
 
-void Board::MakeMoveBonus(int id_from)
+int Board::MakeMoveBonus(int id_from)
 {
     BonusMoreAnts effect1;
     effect1.setPrice(bonuses[0]);
@@ -189,7 +186,8 @@ void Board::MakeMoveBonus(int id_from)
 
     char choice;
     cin >> choice;
-
+    if (std::cin.eof())
+        return 0;
     // Zpracování výběru bonusu
     switch (choice)
     {
@@ -269,6 +267,7 @@ void Board::MakeMoveBonus(int id_from)
         cout << "Neplatná volba." << endl;
         MakeMoveBonus(id_from);
     }
+    return 1;
 }
 
 void Board::MakeMoveSupport(int id_from, int id_to)
@@ -487,7 +486,7 @@ void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
     {
         if (anthill.getOwner() == owner)
         {
-            cout << anthill.getId() << " lvl: " << anthill.getlevel() << " -> " << anthill.getNumberOfAnts() << " || " << anthill.getMaxNumberOfAnts() << endl;
+            cout << "Id:" << anthill.getId() << " lvl: " << anthill.getlevel() << " -> " << anthill.getNumberOfAnts() << " || " << anthill.getMaxNumberOfAnts() << " A: " << anthill.getAttack() << " D: " << anthill.getDefend() << endl;
         }
     }
 }
@@ -548,33 +547,73 @@ int Board::printChoiceAnthillFrom() // z jakeho mraveniste se utoci
 }
 
 // public
-void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
+bool Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
 {
+    bool anthils_is_set = false;
+
     map = name_of_map;
     x_board = 0;
     y_board = 0;
-    string Maps = "../examples/";
+    string Maps = "examples/";
     string File_Name = Maps + name_of_map; // cesta ke složce + nazev vybrane mapy
     ifstream file(File_Name);              // otevreni souboru
     if (file.is_open())
     {
         string line;
+        bool allValuesFound = true;
+
         getline(file, line);
-        line.find("x: "); // najde hodnotu x
-        Board::x_board = stoi(line.substr(3));
+        size_t xPos = line.find("x: ");
+        if (xPos != string::npos)
+        {
+            Board::x_board = stoi(line.substr(xPos + 3));
+        }
+        else
+        {
+            allValuesFound = false;
+        }
+
         getline(file, line);
-        line.find("y: "); // najde hodnotu y
-        Board::y_board = stoi(line.substr(3));
+        size_t yPos = line.find("y: ");
+        if (yPos != string::npos)
+        {
+            Board::y_board = stoi(line.substr(yPos + 3));
+        }
+        else
+        {
+            allValuesFound = false;
+        }
+
         getline(file, line);
-        line.find("t: "); // najde hodnotu y
-        Board::tree_level = stoi(line.substr(3));
+        size_t treePos = line.find("t: ");
+        if (treePos != string::npos)
+        {
+            Board::tree_level = stoi(line.substr(treePos + 3));
+        }
+        else
+        {
+            allValuesFound = false;
+        }
+
         BoardForPrintMake(x_board, y_board);
 
         for (int i = 0; i < 5; i++)
         {
             getline(file, line);
-            line.find("b: "); // najde hodnotu y
-            Board::bonuses.push_back(stoi(line.substr(3)));
+            size_t bonusPos = line.find("b: ");
+            if (bonusPos != string::npos)
+            {
+                Board::bonuses.push_back(stoi(line.substr(bonusPos + 3)));
+            }
+            else
+            {
+                allValuesFound = false;
+            }
+        }
+
+        if (!allValuesFound)
+        {
+            return false;
         }
 
         while (getline(file, line)) // prochazi vsechny radky
@@ -615,6 +654,7 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
                         id++;                                    // Inkrementace ID pro další mraveniště
                     }
                 }
+                anthils_is_set = true;
             }
             else if (line.find("obstacles:") != string::npos && line.substr(0, 10) == "obstacles:")
             {
@@ -643,6 +683,7 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
     else
     {
         cout << "Nepodařilo se otevřít soubor." << endl;
+        return false;
     }
 
     if (x_board == 0 || y_board == 0) // kontrola že je zadane x a y
@@ -652,6 +693,12 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
         x_board = 100;
         y_board = 25;
     }
+    if (!anthils_is_set)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
@@ -745,6 +792,8 @@ int Board::printMove() // zpracovava tisk a vyber ukonu
     case '2': // Kód pro provedení akce Support
         cout << "Podpora z mraveniště" << endl;
         id_from = printChoiceAnthillFrom(); // otazka odkud se podpori
+        if (std::cin.eof())
+            return false;
         system("clear");
         printBoard();
         cout << "Kam chceš Podporit" << endl;
@@ -756,7 +805,11 @@ int Board::printMove() // zpracovava tisk a vyber ukonu
     case '3': // Kód pro provedení akce Bonus
         cout << "Kam chces umistit bonus" << endl;
         id_from = printChoiceAnthillFrom();
+        if (std::cin.eof())
+            return false;
         MakeMove(id_from, -1, 2);
+        if (std::cin.eof())
+            return false;
         AnalyseGameBot();
 
         break;

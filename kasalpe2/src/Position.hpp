@@ -1,7 +1,7 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-//pomocna trida pro lepsi pozicovani na herni mape
+///pomocna trida pro lepsi pozicovani na herni mape
 class Position {
 private:
     int x;

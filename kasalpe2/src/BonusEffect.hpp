@@ -2,7 +2,7 @@
 #define BONUSEFFECT_H
 
 #include "BonusEffectABS.hpp"
-
+/// @brief Bonus na zvětšení levelu, cena se nastavuje při konfiguraci souboru
 class BonusLevel : public BonusEffectABS
 {
 private:
@@ -15,6 +15,7 @@ public:
     void setPrice(int new_price) override;
 };
 
+/// @brief Bonus na zvětšení maximálního počtu mravenců, cena se nastavuje při konfiguraci souboru
 class BonusMoreAnts : public BonusEffectABS
 {
 private:
@@ -26,7 +27,7 @@ public:
     int getPrice() override;
     void setPrice(int new_price) override;
 };
-
+/// @brief Bonus na zvětšení produkce mravenců, cena se nastavuje při konfiguraci souboru
 class BonusFasterProduction : public BonusEffectABS
 {
 private:
@@ -39,6 +40,7 @@ public:
     void setPrice(int new_price) override;
 };
 
+/// @brief Bonus na zvětšení útoků mravenců, cena se nastavuje při konfiguraci souboru
 class BonusStrongerAnts : public BonusEffectABS
 {
 private:
@@ -50,7 +52,7 @@ public:
     int getPrice() override;
     void setPrice(int new_price) override;
 };
-
+/// @brief Bonus na zvětšení Obrany mravenců, cena se nastavuje při konfiguraci souboru
 class BonusDefendAnts : public BonusEffectABS
 {
 private:

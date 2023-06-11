@@ -17,11 +17,6 @@ AntHill::AntHill(int id, int x, int y)
     }
 }
 
-void AntHill::build()
-{
-    // Implementace postavení mraveniště při sestavování mapy
-}
-
 void AntHill::ProduceAnts()
 {
     number_of_ants = number_of_ants + production;
@@ -221,6 +216,8 @@ int AntHill::printSupportTo(const vector<AntHill> &AntsHill_onBoard)
         }
     }
     cin >> id;
+    if (std::cin.eof())
+        return 0;
     if (cin.fail())
     {
         cin.clear();                                         // Vynulovat příznaky chyby u cin

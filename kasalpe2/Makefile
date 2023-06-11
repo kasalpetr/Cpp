@@ -1,42 +1,49 @@
 CXX = g++
 CXXFLAGS = -Wall -pedantic
 
-TARGET = game
-SOURCES = Main.cpp Game.cpp AntHill.cpp board.cpp BonusEffect.cpp bot.cpp obstacles.cpp Position.cpp Ant.cpp
+TARGET = kasalpe2
+SOURCES = src/Main.cpp src/Game.cpp src/AntHill.cpp src/Board.cpp src/BonusEffect.cpp src/Bot.cpp src/obstacles.cpp src/Position.cpp src/Ant.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
+DOXYGEN = doxygen
+DOXYGEN_CONFIG = Doxyfile
+
 all: $(TARGET)
+
 $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET)
 
-
-BonusEffect.o: BonusEffect.cpp
+BonusEffect.o: src/BonusEffect.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-AntHill.o: AntHill.cpp
+AntHill.o: src/AntHill.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 	
-board.o: board.cpp
+board.o: src/Board.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-bot.o: bot.cpp
+bot.o: src/Bot.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-obstacles.o: obstacles.cpp
+obstacles.o: src/obstacles.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Position.o: Position.cpp
+Position.o: src/Position.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Game.o: Game.cpp
+Game.o: src/Game.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Main.o: Main.cpp
+Main.o: src/Main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Ant.o: Ant.cpp
+Ant.o: src/Ant.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
+
+compile: $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
 
 valgrind: $(TARGET)
 	valgrind ./$(TARGET)
@@ -46,4 +53,6 @@ clean:
 
 clear:
 	rm *.o
-	
+
+doc:
+	$(DOXYGEN) $(DOXYGEN_CONFIG)

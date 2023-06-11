@@ -23,7 +23,7 @@ string Game::MapSelect(string _directory) // dotazování na vyber mapy
         closedir(dir);
     }
 
-    if (directory == "../examples/")
+    if (directory == "examples/")
     {
         cout << "Dostupne mapy:" << endl;
     }
@@ -40,7 +40,7 @@ string Game::MapSelect(string _directory) // dotazování na vyber mapy
     cout << endl;
     // Zadání názvu mapy od uživatele
     string selectedMap;
-    if (directory == "../examples/")
+    if (directory == "examples/")
     {
         cout << "Zadejte nazev mapy: ";
     }
@@ -60,7 +60,7 @@ string Game::MapSelect(string _directory) // dotazování na vyber mapy
 
         if (!validMap)
         {
-            if (directory == "../examples/")
+            if (directory == "examples/")
             {
                 cout << "Zadany nazev mapy neexistuje. Zadejte platny nazev: ";
             }
@@ -78,40 +78,48 @@ string Game::MapSelect(string _directory) // dotazování na vyber mapy
 
 bool Game::start()
 {
+    bool fail_load_map = true; // true když je to ok
     int stav = -1;
     Board Board;
-    map = MapSelect("../examples/"); // do promene map se uloží číslo mapy
+    map = MapSelect("examples/"); // do promene map se uloží číslo mapy
     if (std::cin.eof())
         return false;
-    Board.loadMap(map); // načte se mapa do souboru
+    fail_load_map = Board.loadMap(map); // načte se mapa do souboru
     Board.placeAntHill();
-    while (1)
+    if (fail_load_map)
     {
-        Board.printBoard(); // vypise jak vypadá mapa
-        Board.status();
-        stav = Board.printMove();
-        if (stav == 0)
+        while (1)
         {
-            break;
+            Board.printBoard(); // vypise jak vypadá mapa
+            Board.status();
+            stav = Board.printMove();
+            if (stav == 0)
+            {
+                break;
+            }
+            if (stav == 2)
+            {
+                system("clear");
+                saveGame(Board);
+                break;
+            }
+            if (Board.checkWin())
+            {
+                break;
+            }
         }
-        if (stav == 2)
-        {
-            system("clear");
-            saveGame(Board);
-            break;
-        }
-        if (Board.checkWin())
-        {
-            break;
-        }
+    }else
+    {
+        cout << "Nepodarilo se nacist mapu" << endl;
     }
+    
     return true;
 }
 
 void Game::saveGame(Board &b)
 {
     string Savename;
-    string directory = "../examples/save/";
+    string directory = "examples/save/";
     cout << "Napiš název souboru do kterého chceš uložit tuto hru" << endl;
     cin >> Savename;
     directory = directory + Savename + ".txt";
@@ -140,20 +148,22 @@ void Game::saveGame(Board &b)
     else
     {
         std::cout << "Nepodařilo se otevřít soubor pro uložení." << std::endl;
+        saveGame(b);
     }
 }
 
 void Game::loadGame()
 {
+    bool fail_load_map = true;
     int stav = -1;
     bool error = false;
     vector<AntHill> load_AntHill;
     vector<int> antHillData;
     Board Board;
     // Implementace načtení hry ze souboru
-    string directory = "../examples/save/";
+    string directory = "examples/save/";
     string save;
-    save = MapSelect("../examples/save");
+    save = MapSelect("examples/save");
     directory = directory + save;
     ifstream file(directory);
 
@@ -179,10 +189,15 @@ void Game::loadGame()
             load_AntHill.push_back(anthill);
             // Přidání mraveniště na desku
         }
-        Board.loadMap(map);
+        fail_load_map = Board.loadMap(map);
         Board.setAntHill_on_board(load_AntHill);
         Board.placeAntHill();
         file.close();
+        if (!fail_load_map)
+        {
+            error = true;
+        }
+
         std::cout << "Hra byla úspěšně načtena." << std::endl;
         // Nastavení načtené mapy
     }
@@ -215,5 +230,9 @@ void Game::loadGame()
                 break;
             }
         }
+    }else
+    {
+        cout << "Nepodarilo se nacist mapu" << endl;
     }
+    
 }
