@@ -1,15 +1,19 @@
 #ifndef BOT_H
 #define BOT_H
 
+#include"AntHill.hpp"
+
 class Bot
 {
 private:
-    // privatní metody pro zjistený optimálního tahu pro počítač
-    void findMove();
-
 public:
+
+    int max_utok = 0;
+    bool nakup = false;
+    bool utok = false;
+    int pauza_kolo = 0;
+    int money = 0;
     Bot();
-    void Move(); //provedeni tahu
 };
 
 #endif // BOT_H

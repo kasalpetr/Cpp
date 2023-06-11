@@ -18,14 +18,15 @@
 #include "Ant.hpp"
 #include "Position.hpp"
 #include "Obstacles.hpp"
-#include "Bot.hpp"
 #include "BonusEffect.hpp"
+#include "Bot.hpp"
 
 using namespace std;
 
 class Board
 {
 private:
+    string map;
     // Interní datové struktury pro reprezentaci desky
     vector<Ant> Ants_onBoard;                                  // mravenci na desce
     vector<AntHill> AntsHill_onBoard;                          // mraveniste na desce
@@ -35,6 +36,7 @@ private:
     int x_board;
     int y_board;
     int test_counter = 0;
+    Bot pocitac;
 
     int tree_level = 3;
     int money = 0;
@@ -50,6 +52,7 @@ private:
     vector<Position> FindWay(int id_from, int id_to);
     bool isValidPosition(int row, int col);
     void BoardForPrintMake(int x_board, int y_board);
+    void AnalyseGameBot();
 
     // print metody
     void printAnthillOwner(int owner);
@@ -60,7 +63,7 @@ public:
     Board();
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);
     void loadMap(string name_of_map); // nahraje mapu
-    
+
     bool checkWin();
 
     // print metody

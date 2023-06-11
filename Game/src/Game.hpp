@@ -22,8 +22,6 @@ private:
 public:
     Game();
     bool start(); //pusti hru -> vyběr mapy -> vyběr obtížnosti
-    void player(); //tah hrace
-    void bot(); //tah hrace
 
     void saveGame(const string saveFile); //ulozi hru
     void loadGame(const string saveFile); //nahraje hru

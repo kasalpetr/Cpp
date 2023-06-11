@@ -59,6 +59,10 @@ void Board::MakeMove(int id_from, int id_to, int choice) // choice 0 -> attack, 
     {
         MakeMoveBonus(id_from);
     }
+    else if (choice == 3)
+    {
+    }
+
     system("clear");
 }
 
@@ -388,6 +392,94 @@ void Board::BoardForPrintMake(int y_board, int x_board) // vytvoří 2d pole pro
     }
 }
 
+void Board::AnalyseGameBot()
+// jednou za 3 kola neudela nic,... abych ho porazil
+// pokud má více jak 40€ koupí jednou za 2 kola bonus na max_ants
+// pokud má nejmenší utocnou silu mravencu, zvetsuje sílu
+// pokud již nema nejmenší utocnou silu zautočí na nejbližší mraveniste
+// zaroven se nevykonaji 2 stejny akce za sebou
+{
+    int id_from_pc = -1;
+    int id_to_pc = -1;
+    BonusMoreAnts effect1;
+    effect1.setPrice(bonuses[0]);
+    BonusStrongerAnts effect2;
+    effect2.setPrice(bonuses[1]);
+    pocitac.max_utok = 0;
+    pocitac.money = pocitac.money + 10;
+    pocitac.pauza_kolo = pocitac.pauza_kolo + 1;
+    if (pocitac.pauza_kolo <= 3) // neni pauza kolo
+    {
+        if (pocitac.money > 40 && !pocitac.nakup) // jeden ze 2 kol probíhá nákup ale musí mít víc jak 40€
+        {
+            for (auto &anthill : AntsHill_onBoard) // prvnímu mravenisti -> tomu hlavnímu se koupí bonus na vetší počet mravencu
+            {
+                if (anthill.getOwner() == 2 && pocitac.money >= effect1.getPrice())
+                {
+                    pocitac.money = pocitac.money - effect1.getPrice();
+                    effect1.applyEffect(anthill);
+                    pocitac.nakup = true;
+                    break;
+                }
+            }
+        }
+        else
+        { // zjisti jestli má větší sílu než nějaké mraveniště pokud ano tak zautoci na to slabší mraveniště mraveniste pokud ne tak zvysi silu mravencu
+            pocitac.nakup = false;
+            pocitac.utok = false;
+            system("clear");
+            for (auto &anthill : AntsHill_onBoard)
+            {
+                // nejsilnejsi utok pocitace
+                if (anthill.getOwner() == 2)
+                {
+                    int attack_ant = anthill.getNumberOfAnts() * anthill.getlevel() * anthill.getAttack();
+                    if (attack_ant > pocitac.max_utok)
+                    {
+                        pocitac.max_utok = attack_ant;
+                        id_from_pc = anthill.getId();
+                    }
+                }
+            }
+
+            // jestli nekoho porazí tak na něj zautočí
+            for (auto &anthill : AntsHill_onBoard)
+            {
+                // kouknuti jestli je nekdo slabsi
+                if (anthill.getOwner() != 2)
+                {
+                    int deffend_ant = anthill.getNumberOfAnts() * anthill.getlevel() * anthill.getDefend();
+                    if (deffend_ant < pocitac.max_utok)
+                    {
+                        id_to_pc = anthill.getId();
+                        MakeMoveAttack(id_from_pc, id_to_pc);
+                        pocitac.utok = true;
+                        system("clear");
+                        break;
+                    }
+                }
+            }
+            if (!pocitac.utok)
+            {
+                for (auto &anthill : AntsHill_onBoard)
+                {
+                    // nejsilnejsi utok pocitace
+                    if (anthill.getOwner() == 2)
+                    {
+                        id_from_pc = anthill.getId();
+                        effect2.applyEffect(AntsHill_onBoard[id_from_pc]);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else // nevykoná se nic
+    {
+        pocitac.pauza_kolo = 0;
+    }
+}
+
 void Board::printAnthillOwner(int owner) // tiskne mraveniste podle majitele
 {                                        // tiskne id mravenist dle ownera
     cout << "\n";
@@ -458,6 +550,7 @@ int Board::printChoiceAnthillFrom() // z jakeho mraveniste se utoci
 // public
 void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hriste a pozice barier + pozice mravenistw
 {
+    map = name_of_map;
     x_board = 0;
     y_board = 0;
     string Maps = "../examples/";
@@ -565,15 +658,26 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
 
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
 {
+    bool tmp = false;
+    tmp = std::all_of(AntsHill_onBoard.begin(), AntsHill_onBoard.end(), [](const AntHill &anthill)
+                           { return anthill.getOwner() == 1; });
 
-    int winner = AntsHill_onBoard.back().getOwner();
-    for (auto &anthill : AntsHill_onBoard)
+    if (tmp == true)
     {
-        if (winner != anthill.getOwner())
-        {
-            return false;
+        cout << "Vyhrál jsi" << endl;
+        return true;
+    }else
+    {
+        for(auto &anthill : AntsHill_onBoard){
+            if (anthill.getOwner() == 1)
+            {
+                return false;
+            }
+            
         }
     }
+    
+    cout << "Prohrál jsi" << endl;
     return true;
 }
 
@@ -653,10 +757,11 @@ bool Board::printMove() // zpracovava tisk a vyber ukonu
         break;
     case '4': // Kód pro provedení akce Nic
         system("clear");
-
+        MakeMove(-1, -1, 3);
         break;
     case '5': // Kód pro provedení akce Uložit
         system("clear");
+        
         break;
     case '6': // Kód pro provedení akce Uložit
         system("clear");
@@ -671,5 +776,7 @@ bool Board::printMove() // zpracovava tisk a vyber ukonu
 
         printMove();
     }
+    AnalyseGameBot();
+
     return true;
 }

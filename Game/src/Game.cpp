@@ -68,7 +68,6 @@ bool Game::start()
         {
             break;
         }
-
         if (Board.checkWin())
         {
             break;
@@ -77,15 +76,6 @@ bool Game::start()
     return true;
 }
 
-void Game::player()
-{
-    // Implementace tahu hráče
-}
-
-void Game::bot()
-{
-    // Implementace tahu počítačového hráče (bota)
-}
 
 void Game::saveGame(const string saveFile)
 {

@@ -140,7 +140,7 @@ bool AntHill::Attack(AntHill &Attack_from)
     {
         this->number_of_ants = abs(((defense - attack) / Attack_from.getlevel()) / Attack_from.getAttack());
         Attack_from.number_of_ants = 0;
-        changeOwner(1);
+        changeOwner(Attack_from.getOwner());
         return true;
     }
     if (defense - attack > 0)
