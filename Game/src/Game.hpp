@@ -17,14 +17,14 @@ class Game
 {
 private:
     // Interní proměnné pro reprezentaci stavu hry
-    string MapSelect(); //vyber mapy
+    string MapSelect(string _directory); //vyber mapy
     string map; // číslo mapy 
 public:
     Game();
     bool start(); //pusti hru -> vyběr mapy -> vyběr obtížnosti
 
-    void saveGame(const string saveFile); //ulozi hru
-    void loadGame(const string saveFile); //nahraje hru
+    void saveGame(Board &b); //ulozi hru
+    void loadGame(); //nahraje hru
 };
 
 #endif // GAME_H

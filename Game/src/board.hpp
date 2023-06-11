@@ -69,7 +69,10 @@ public:
     // print metody
     void printBoard(); // tisk herní plochy
     void status();
-    bool printMove(); // tisk výběru tahu
+    int printMove(); // tisk výběru tahu
+
+    //getter
+    vector<AntHill> getAntHill_on_board();
 };
 
 #endif // BOARD_H

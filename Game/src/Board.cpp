@@ -660,23 +660,24 @@ bool Board::checkWin() // kontroluje jestli někdo nevyhral
 {
     bool tmp = false;
     tmp = std::all_of(AntsHill_onBoard.begin(), AntsHill_onBoard.end(), [](const AntHill &anthill)
-                           { return anthill.getOwner() == 1; });
+                      { return anthill.getOwner() == 1; });
 
     if (tmp == true)
     {
         cout << "Vyhrál jsi" << endl;
         return true;
-    }else
+    }
+    else
     {
-        for(auto &anthill : AntsHill_onBoard){
+        for (auto &anthill : AntsHill_onBoard)
+        {
             if (anthill.getOwner() == 1)
             {
                 return false;
             }
-            
         }
     }
-    
+
     cout << "Prohrál jsi" << endl;
     return true;
 }
@@ -721,8 +722,8 @@ void Board::printBoard() // tiskne mapu
     }
 }
 
-bool Board::printMove() // zpracovava tisk a vyber ukonu
-{                       // tiskne možné tahy
+int Board::printMove() // zpracovava tisk a vyber ukonu
+{                      // tiskne možné tahy
     char choice = printChoiceOfMove();
     int id_from = -1;
     int id_to = -1;
@@ -740,6 +741,8 @@ bool Board::printMove() // zpracovava tisk a vyber ukonu
         if (std::cin.eof())
             return false;
         MakeMove(id_from, id_to, 0);
+        AnalyseGameBot();
+
         break;
     case '2': // Kód pro provedení akce Support
         cout << "Podpora z mraveniště" << endl;
@@ -749,34 +752,44 @@ bool Board::printMove() // zpracovava tisk a vyber ukonu
         cout << "Kam chceš Podporit" << endl;
         id_to = AntsHill_onBoard[id_from].printSupportTo(AntsHill_onBoard); // kam se podpori
         MakeMove(id_from, id_to, 1);
+        AnalyseGameBot();
+
         break;
     case '3': // Kód pro provedení akce Bonus
         cout << "Kam chces umistit bonus" << endl;
         id_from = printChoiceAnthillFrom();
         MakeMove(id_from, -1, 2);
+        AnalyseGameBot();
+
         break;
     case '4': // Kód pro provedení akce Nic
         system("clear");
         MakeMove(-1, -1, 3);
+        AnalyseGameBot();
+
         break;
     case '5': // Kód pro provedení akce Uložit
         system("clear");
-        
+        return 2;
         break;
-    case '6': // Kód pro provedení akce Uložit
+    case '6': // Kód pro provedení akce Ukončit
         system("clear");
-        return false;
+        return 0;
         break;
     default:
         if (std::cin.eof())
         {
-            return false;
+            return 0;
         }
         cout << "Neplatná volba -> zvol něco jiného" << endl;
 
         printMove();
     }
-    AnalyseGameBot();
 
-    return true;
+    return 1;
+}
+
+vector<AntHill> Board::getAntHill_on_board()
+{
+    return AntsHill_onBoard;
 }
