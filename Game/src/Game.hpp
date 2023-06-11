@@ -4,10 +4,14 @@
 #include <string>
 #include <limits>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <dirent.h>
 #include <algorithm>
+#include <sys/stat.h>
+
 
 #include "Board.hpp"
 

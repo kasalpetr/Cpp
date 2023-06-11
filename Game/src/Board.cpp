@@ -652,8 +652,6 @@ void Board::loadMap(string name_of_map) // nacteni mapy -> vybrani velikost hris
         x_board = 100;
         y_board = 25;
     }
-
-    placeAntHill();
 }
 
 bool Board::checkWin() // kontroluje jestli někdo nevyhral
@@ -792,4 +790,21 @@ int Board::printMove() // zpracovava tisk a vyber ukonu
 vector<AntHill> Board::getAntHill_on_board()
 {
     return AntsHill_onBoard;
+}
+
+bool Board::setAntHill_on_board(vector<AntHill> &new_AntsHill)
+{ // vrati false pokud se nepovede nacist novy vector anthill
+    int ctr = 0;
+    if (new_AntsHill.size() != AntsHill_onBoard.size())
+    {
+        return false;
+    }
+    for (auto &anthill : AntsHill_onBoard)
+    {
+
+        anthill.loadnewAntHills(new_AntsHill[ctr].getId(), new_AntsHill[ctr].getlevel(), new_AntsHill[ctr].getNumberOfAnts(), new_AntsHill[ctr].getMaxNumberOfAnts(), new_AntsHill[ctr].getOwner(), new_AntsHill[ctr].getAttack(), new_AntsHill[ctr].getDefend());
+        ctr++;
+    }
+
+    return true;
 }

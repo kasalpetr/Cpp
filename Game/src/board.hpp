@@ -41,7 +41,6 @@ private:
     int tree_level = 3;
     int money = 0;
 
-    void placeAntHill();                                                                                    // položi mraveniste kde ma byt
     void placeObstacles(int x, int y);                                                                      // polozi prekazky tam kde ma
     bool checkplace(vector<AntHill> &AntsHill_onBoard, vector<Obstacles> &Obstacles_onBoard, int x, int y); // vraci false pokud jsou 2 veci na stejným miste
     bool checkAroundPlace(int x, int y, int new_x, int new_y);
@@ -64,6 +63,8 @@ public:
     Board(std::vector<AntHill> antHills, std::vector<Obstacles> obstacles);
     void loadMap(string name_of_map); // nahraje mapu
 
+    void placeAntHill();                                                                                    // položi mraveniste kde ma byt
+
     bool checkWin();
 
     // print metody
@@ -73,6 +74,7 @@ public:
 
     //getter
     vector<AntHill> getAntHill_on_board();
+    bool setAntHill_on_board(vector<AntHill> &new_AntsHill);
 };
 
 #endif // BOARD_H

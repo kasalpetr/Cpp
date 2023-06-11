@@ -50,6 +50,8 @@ public:
     void setMaxAnts();
     void setdefend();
     void setattack();
+
+    void loadnewAntHills(int id, int level, int number_of_ants, int max_of_ants, int owner, int attack, int defend);
     void setPassable(bool pruchod) override;
     void support(AntHill &Attack_from);
     bool Attack(AntHill &Attack_from);

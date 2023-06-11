@@ -91,6 +91,17 @@ void AntHill::setattack()
     attack = attack + 10;
 }
 
+void AntHill::loadnewAntHills(int _id, int _level, int _number_of_ants, int _max_of_ants, int _owner, int _attack, int _defend)
+{
+    id = _id;
+    level = _level;
+    number_of_ants = _number_of_ants;
+    max_ants = _max_of_ants;
+    Owner = _owner;
+    attack = _attack;
+    defend = _defend;
+}
+
 void AntHill::setproduction()
 {
     production = production + 10;

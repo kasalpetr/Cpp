@@ -43,7 +43,6 @@ int main(int argc, char const *argv[])
             // Provádění akce pro možnost 2
             system("clear");
             game.loadGame();
-            std::cout << "Načíst hru\n";
             return 0;
         case 3:
             // Provádění akce pro možnost 3

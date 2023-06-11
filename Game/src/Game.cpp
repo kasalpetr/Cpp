@@ -84,6 +84,7 @@ bool Game::start()
     if (std::cin.eof())
         return false;
     Board.loadMap(map); // načte se mapa do souboru
+    Board.placeAntHill();
     while (1)
     {
         Board.printBoard(); // vypise jak vypadá mapa
@@ -126,7 +127,15 @@ void Game::saveGame(Board &b)
         }
 
         file.close();
-        std::cout << "Hra byla úspěšně uložena do souboru." << std::endl;
+        // Set file permissions to read for all users
+        if (chmod(directory.c_str(), S_IRUSR | S_IRGRP | S_IROTH) != 0)
+        {
+            std::cout << "Nepodařilo se nastavit práva ke čtení pro soubor." << std::endl;
+        }
+        else
+        {
+            std::cout << "Hra byla úspěšně uložena do souboru." << std::endl;
+        }
     }
     else
     {
@@ -136,7 +145,75 @@ void Game::saveGame(Board &b)
 
 void Game::loadGame()
 {
+    int stav = -1;
+    bool error = false;
+    vector<AntHill> load_AntHill;
+    vector<int> antHillData;
+    Board Board;
     // Implementace načtení hry ze souboru
+    string directory = "../examples/save/";
     string save;
     save = MapSelect("../examples/save");
+    directory = directory + save;
+    ifstream file(directory);
+
+    if (file.is_open())
+    {
+        std::string line;
+        std::getline(file, line); // Načtení prvního řádku (název mapy)
+        std::string map = line;
+        while (std::getline(file, line))
+        {
+            std::istringstream iss(line);
+            std::string token;
+            antHillData.clear();
+
+            while (std::getline(iss, token, ','))
+            {
+                int value = std::stoi(token);
+                antHillData.push_back(value);
+            }
+            // Vytvoření mraveniště a předání hodnot
+            AntHill anthill;
+            anthill.loadnewAntHills(antHillData[0], antHillData[1], antHillData[2], antHillData[3], antHillData[4], antHillData[5], antHillData[6]);
+            load_AntHill.push_back(anthill);
+            // Přidání mraveniště na desku
+        }
+        Board.loadMap(map);
+        Board.setAntHill_on_board(load_AntHill);
+        Board.placeAntHill();
+        file.close();
+        std::cout << "Hra byla úspěšně načtena." << std::endl;
+        // Nastavení načtené mapy
+    }
+    else
+    {
+        std::cout << "Nepodařilo se otevřít soubor pro načtení." << std::endl;
+        error = true;
+    }
+    if (!error)
+    {
+        /* code */
+
+        while (1)
+        {
+            Board.printBoard(); // vypise jak vypadá mapa
+            Board.status();
+            stav = Board.printMove();
+            if (stav == 0)
+            {
+                break;
+            }
+            if (stav == 2)
+            {
+                system("clear");
+                saveGame(Board);
+                break;
+            }
+            if (Board.checkWin())
+            {
+                break;
+            }
+        }
+    }
 }
