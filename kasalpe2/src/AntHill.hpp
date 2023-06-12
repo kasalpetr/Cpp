@@ -17,7 +17,7 @@ private:
     // bonusy
     int level = 1;
     int max_ants = 25;
-    int production = 1;
+    int production = 5;
     int defend = 10;
     int attack = 10;
    
