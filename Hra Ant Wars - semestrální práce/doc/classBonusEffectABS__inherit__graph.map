@@ -1,0 +1,8 @@
+<map id="BonusEffectABS" name="BonusEffectABS">
+<area shape="rect" id="node1" title="virtualni trida pro effecty" alt="" coords="360,5,485,112"/>
+<area shape="rect" id="node2" href="$classBonusDefendAnts.html" title="Bonus na zvětšení Obrany mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="5,160,144,267"/>
+<area shape="rect" id="node3" href="$classBonusFasterProduction.html" title="Bonus na zvětšení produkce mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="168,160,339,267"/>
+<area shape="rect" id="node4" href="$classBonusLevel.html" title="Bonus na zvětšení levelu, cena se nastavuje při konfiguraci souboru." alt="" coords="363,160,483,267"/>
+<area shape="rect" id="node5" href="$classBonusMoreAnts.html" title="Bonus na zvětšení maximálního počtu mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="507,160,631,267"/>
+<area shape="rect" id="node6" href="$classBonusStrongerAnts.html" title="Bonus na zvětšení útoků mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="656,160,803,267"/>
+</map>

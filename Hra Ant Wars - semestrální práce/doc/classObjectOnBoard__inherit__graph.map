@@ -1,0 +1,7 @@
+<map id="ObjectOnBoard" name="ObjectOnBoard">
+<area shape="rect" id="node1" title="virtální metoda pro objekty na mapě" alt="" coords="280,5,404,112"/>
+<area shape="rect" id="node2" href="$classAnt.html" title="Třída reprezentující mravence a jejich vlastnosti." alt="" coords="5,211,129,333"/>
+<area shape="rect" id="node3" href="$classAntHill.html" title="reprezentace mraveniste" alt="" coords="154,160,346,384"/>
+<area shape="rect" id="node4" href="$classEmptySpace.html" title="reprezentace prázdného místa na 2d mape" alt="" coords="370,211,498,333"/>
+<area shape="rect" id="node5" href="$classObstacles.html" title="prekazky na 2d mape" alt="" coords="523,204,647,340"/>
+</map>

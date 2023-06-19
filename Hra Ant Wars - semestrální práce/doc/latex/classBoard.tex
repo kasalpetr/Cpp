@@ -1,0 +1,106 @@
+\hypertarget{classBoard}{}\doxysection{Board Class Reference}
+\label{classBoard}\index{Board@{Board}}
+
+
+hlavní třída kde se děje většina věcí hlavně výpisy  
+
+
+
+
+{\ttfamily \#include $<$Board.\+hpp$>$}
+
+
+
+Collaboration diagram for Board\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classBoard__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classBoard_aa208c0f58e0140ffe5970e376ac3ba97}{load\+Map}} (string name\+\_\+of\+\_\+map)
+\begin{DoxyCompactList}\small\item\em nahraje mapu ze souboru \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBoard_a002c9a6f825ac0d0e664ce0454ba42fe}\label{classBoard_a002c9a6f825ac0d0e664ce0454ba42fe}} 
+void \mbox{\hyperlink{classBoard_a002c9a6f825ac0d0e664ce0454ba42fe}{place\+Ant\+Hill}} ()
+\begin{DoxyCompactList}\small\item\em polozi mraveniste do 2d mapy \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBoard_a2fd14b4bb231c5f0781f3e818931b297}\label{classBoard_a2fd14b4bb231c5f0781f3e818931b297}} 
+bool \mbox{\hyperlink{classBoard_a2fd14b4bb231c5f0781f3e818931b297}{check\+Win}} ()
+\begin{DoxyCompactList}\small\item\em kontrola jestli někdo již nevyhral \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBoard_aca49f093314a104381d05998bbf62f7f}\label{classBoard_aca49f093314a104381d05998bbf62f7f}} 
+void \mbox{\hyperlink{classBoard_aca49f093314a104381d05998bbf62f7f}{print\+Board}} ()
+\begin{DoxyCompactList}\small\item\em tisk herní plochy \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBoard_a86b9916a1226359000f43216c2687ab3}\label{classBoard_a86b9916a1226359000f43216c2687ab3}} 
+void \mbox{\hyperlink{classBoard_a86b9916a1226359000f43216c2687ab3}{status}} ()
+\begin{DoxyCompactList}\small\item\em tisk info o mravenistich \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classBoard_aab9769984b9bc13985acfe6ca5ffcd9a}{print\+Move}} ()
+\begin{DoxyCompactList}\small\item\em spracovava výběr tahu hráče \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classBoard_adc8dc7c99d52c134e5bc9f5057b0aaa8}\label{classBoard_adc8dc7c99d52c134e5bc9f5057b0aaa8}} 
+vector$<$ \mbox{\hyperlink{classAntHill}{Ant\+Hill}} $>$ \mbox{\hyperlink{classBoard_adc8dc7c99d52c134e5bc9f5057b0aaa8}{get\+Ant\+Hill\+\_\+on\+\_\+board}} ()
+\begin{DoxyCompactList}\small\item\em getter \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classBoard_a19bd25e8db4f1139fa5234053ae4b837}{set\+Ant\+Hill\+\_\+on\+\_\+board}} (vector$<$ \mbox{\hyperlink{classAntHill}{Ant\+Hill}} $>$ \&new\+\_\+\+Ants\+Hill)
+\begin{DoxyCompactList}\small\item\em nastavy vektor mravenist na novy -\/$>$ pouzivani pri nacitani mapy \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+hlavní třída kde se děje většina věcí hlavně výpisy 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classBoard_aa208c0f58e0140ffe5970e376ac3ba97}\label{classBoard_aa208c0f58e0140ffe5970e376ac3ba97}} 
+\index{Board@{Board}!loadMap@{loadMap}}
+\index{loadMap@{loadMap}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{loadMap()}{loadMap()}}
+{\footnotesize\ttfamily bool Board\+::load\+Map (\begin{DoxyParamCaption}\item[{string}]{name\+\_\+of\+\_\+map }\end{DoxyParamCaption})}
+
+
+
+nahraje mapu ze souboru 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+\_\+of\+\_\+map} & název mapy kterou si hrác vybral ve tride \mbox{\hyperlink{classGame}{Game}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pokud se něco pokazi vrátí se false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBoard_aab9769984b9bc13985acfe6ca5ffcd9a}\label{classBoard_aab9769984b9bc13985acfe6ca5ffcd9a}} 
+\index{Board@{Board}!printMove@{printMove}}
+\index{printMove@{printMove}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{printMove()}{printMove()}}
+{\footnotesize\ttfamily int Board\+::print\+Move (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+spracovava výběr tahu hráče 
+
+\begin{DoxyReturn}{Returns}
+vrátí 0 při nějaké chybě 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBoard_a19bd25e8db4f1139fa5234053ae4b837}\label{classBoard_a19bd25e8db4f1139fa5234053ae4b837}} 
+\index{Board@{Board}!setAntHill\_on\_board@{setAntHill\_on\_board}}
+\index{setAntHill\_on\_board@{setAntHill\_on\_board}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{setAntHill\_on\_board()}{setAntHill\_on\_board()}}
+{\footnotesize\ttfamily bool Board\+::set\+Ant\+Hill\+\_\+on\+\_\+board (\begin{DoxyParamCaption}\item[{vector$<$ \mbox{\hyperlink{classAntHill}{Ant\+Hill}} $>$ \&}]{new\+\_\+\+Ants\+Hill }\end{DoxyParamCaption})}
+
+
+
+nastavy vektor mravenist na novy -\/$>$ pouzivani pri nacitani mapy 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+\+Ants\+Hill} & novy vektor mravenist \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pokud nejsou stejne velky vrati se false 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/Board.\+hpp\item 
+src/Board.\+cpp\end{DoxyCompactItemize}
