@@ -1,4 +1,0 @@
-<map id="Obstacles" name="Obstacles">
-<area shape="rect" id="node1" title="prekazky na 2d mape" alt="" coords="5,160,129,296"/>
-<area shape="rect" id="node2" href="$classObjectOnBoard.html" title="virtální metoda pro objekty na mapě" alt="" coords="5,5,129,112"/>
-</map>

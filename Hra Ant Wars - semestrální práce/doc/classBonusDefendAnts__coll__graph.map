@@ -1,4 +1,0 @@
-<map id="BonusDefendAnts" name="BonusDefendAnts">
-<area shape="rect" id="node1" title="Bonus na zvětšení Obrany mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="5,160,144,267"/>
-<area shape="rect" id="node2" href="$classBonusEffectABS.html" title="virtualni trida pro effecty" alt="" coords="12,5,137,112"/>
-</map>

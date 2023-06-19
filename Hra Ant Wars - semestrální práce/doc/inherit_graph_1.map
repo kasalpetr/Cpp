@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classBonusEffectABS.html" title="virtualni trida pro effecty" alt="" coords="5,107,131,133"/>
-<area shape="rect" id="node2" href="$classBonusDefendAnts.html" title="Bonus na zvětšení Obrany mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="195,5,333,32"/>
-<area shape="rect" id="node3" href="$classBonusFasterProduction.html" title="Bonus na zvětšení produkce mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="179,56,349,83"/>
-<area shape="rect" id="node4" href="$classBonusLevel.html" title="Bonus na zvětšení levelu, cena se nastavuje při konfiguraci souboru." alt="" coords="215,107,313,133"/>
-<area shape="rect" id="node5" href="$classBonusMoreAnts.html" title="Bonus na zvětšení maximálního počtu mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="202,157,326,184"/>
-<area shape="rect" id="node6" href="$classBonusStrongerAnts.html" title="Bonus na zvětšení útoků mravenců, cena se nastavuje při konfiguraci souboru." alt="" coords="191,208,337,235"/>
-</map>
