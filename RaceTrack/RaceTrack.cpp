@@ -21,6 +21,7 @@
 #include <unordered_set>
 #include <vector>
 
+
 enum Point : size_t {};
 
 struct Path {
@@ -37,9 +38,79 @@ struct Path {
 };
 
 #endif
-
+using namespace std;
 
 std::vector<Path> longest_track(size_t points, const std::vector<Path>& all_paths){
+std::unordered_map<size_t, std::vector<Path>> graph;
+    for (const Path& path : all_paths) {
+        graph[path.from].push_back(path);
+    }
+
+    // Funkce pro topologické seřazení grafu (DFS).
+    std::vector<bool> visited(points, false);
+    std::vector<size_t> topological_order;
+
+    std::function<void(size_t)> dfs = [&](size_t v) {
+        visited[v] = true;
+        for (const Path& edge : graph[v]) {
+            if (!visited[edge.to]) {
+                dfs(edge.to);
+            }
+        }
+        topological_order.push_back(v);
+    };
+
+    // Pro každou křižovatku spustíme DFS, abychom získali topologické seřazení.
+    for (size_t i = 0; i < points; ++i) {
+        if (!visited[i]) {
+            dfs(i);
+        }
+    }
+
+    std::vector<unsigned> max_length(points, 0);
+    std::vector<size_t> prev(points, points);
+
+    // Procházíme topologické seřazení a hledáme nejdelší cesty.
+    for (size_t v : topological_order) {
+        for (const Path& edge : graph[v]) {
+            if (max_length[v] + edge.length > max_length[edge.to]) {
+                max_length[edge.to] = max_length[v] + edge.length;
+                prev[edge.to] = v;
+            }
+        }
+    }
+
+    // Hledáme křižovatku, na které končí nejdelší trať.
+    size_t end_point = 0;
+    unsigned max_path_length = 0;
+    for (size_t i = 0; i < points; ++i) {
+        if (max_length[i] > max_path_length) {
+            max_path_length = max_length[i];
+            end_point = i;
+        }
+    }
+
+    // Rekonstruujeme nejdelší trať od konce zpět.
+    std::vector<Path> result;
+    size_t current_point = end_point;
+    while (current_point != points) {
+        size_t previous_point = prev[current_point];
+        for (const Path& edge : graph[previous_point]) {
+            if (edge.to == current_point) {
+                result.push_back(edge);
+                break;
+            }
+        }
+        current_point = previous_point;
+    }
+
+    // Obrátíme cesty, aby směřovaly z kopce dolů.
+    std::reverse(result.begin(), result.end());
+
+  for (const Path& path : result) {
+    std::cout << "From " << path.from << " to " << path.to << ", Length: " << path.length << std::endl;
+}
+    return result;
 
 }
 
