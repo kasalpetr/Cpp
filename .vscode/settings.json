@@ -52,6 +52,13 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "csignal": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "optional": "cpp"
     }
 }
