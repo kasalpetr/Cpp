@@ -1,0 +1,3 @@
+Úkolem je realizovat třídy, které implementují správu studentů na studijním oddělení.
+
+Předpokládáme, že na studijním oddělení vedou agendu studentů. Pro jednoduchost je každý student reprezentovaný svým jménem (uvažujeme jeden řetězec pro příjmení a jméno či více jmen, jednotlivá slova jsou oddělená alespoň jednou mezerou), datem narození a rokem nástupu na fakultu. Chceme mít možnost studenty přidávat, odebírat a vyhledávat v databázi studentů. O studentech předpokládáme, že trojice údajů jméno + datum narození + rok nástupu je unikátní, v databázi se neopakuje. Samotná jména, data narození a roky nástupu se samozřejmě opakovat již mohou. Při vkládání a odebírání studenta zadáváme vždy již vyplněnou instanci studenta (obsahuje zmiňovanou trojici údajů).

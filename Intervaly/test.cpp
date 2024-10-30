@@ -345,7 +345,7 @@ public:
 
     return false;
   }
-
+ 
   auto begin() { return intervaly.begin(); }
   auto end() { return intervaly.end(); }
   auto begin() const { return intervaly.begin(); }
